@@ -182,6 +182,7 @@
 	action_icon = 'modular_bluemoon/icons/mob/actions/traits_actions.dmi'
 	action_icon_state = "beast"
 	shapeshift_type = /mob/living/simple_animal/hostile/beastspirit
+	die_with_shapeshifted_form = FALSE
 	var/beast_gender = "male"
 	var/beast_type = ""
 	var/beast_sound = 'modular_bluemoon/sound/creatures/wolf.ogg'

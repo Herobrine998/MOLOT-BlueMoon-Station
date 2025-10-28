@@ -37,7 +37,7 @@
 	paycheck = PAYCHECK_COMMAND
 	paycheck_department = ACCOUNT_SEC
 
-	mind_traits = list(TRAIT_LAW_ENFORCEMENT_METABOLISM)
+	mind_traits = list(TRAIT_LAW_ENFORCEMENT_METABOLISM, TRAIT_FENCER)
 
 	blacklisted_quirks = list(/datum/quirk/mute, /datum/quirk/brainproblems, /datum/quirk/blindness, /datum/quirk/monophobia)
 
