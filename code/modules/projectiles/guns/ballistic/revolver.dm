@@ -26,6 +26,8 @@
 	. = ..()
 	if(.)
 		return
+	// if(!magazine.speedloader)
+	// 	return to_chat(user, span_userdanger("Вам не получается зарядить револьвер при помощи [magazine]!"))
 	var/num_loaded = magazine.attackby(A, user, params, 1)
 	if(num_loaded)
 		to_chat(user, "<span class='notice'>You load [num_loaded] shell\s into \the [src].</span>")
