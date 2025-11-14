@@ -672,7 +672,7 @@
 	name = "Alta's dogtag"
 	slot = ITEM_SLOT_NECK
 	path = /obj/item/clothing/neck/tie/dogtag
-	ckeywhitelist = list("oni3288", "ghos7ik", "discord980", "mihana964", "romontesque", "enigma418", "smol42", "notlikeluls",  "kladmenuwu", "alexsandoor", "scramblescream", "nai1ten", "devildeadspace", "zetneskov", "hazzi", "definitelynotnesuby", "silverfoxpaws", "pr1zrak", "earthphobia", "wafflemeow", "trora", "kosep", "urfdrf", "mikolaostavkin", "xaeshkavd", "deltarayx", "korinfellori", "troubleneko17th", "dimofon", "lichfail", "gisya", "dimakr", "cupteazee", "nopeingeneer", "silyamg", "lomodno", "valsons", "nyctealust", "abrikos", "spoopyman228", "stasdvrz", "shizalrp", "tblkba")
+	ckeywhitelist = list("oni3288", "ghos7ik", "discord980", "mihana964", "romontesque", "enigma418", "smol42", "notlikeluls",  "kladmenuwu", "alexsandoor", "scramblescream", "nai1ten", "devildeadspace", "zetneskov", "hazzi", "definitelynotnesuby", "silverfoxpaws", "pr1zrak", "earthphobia", "wafflemeow", "trora", "kosep", "urfdrf", "mikolaostavkin", "xaeshkavd", "deltarayx", "korinfellori", "troubleneko17th", "dimofon", "lichfail", "gisya", "dimakr", "cupteazee", "nopeingeneer", "silyamg", "lomodno", "valsons", "nyctealust", "abrikos", "spoopyman228", "stasdvrz", "shizalrp", "tblkba", "dragon9090")
 
 /datum/gear/donator/bm/hateredsoul_dogtag
 	name = "Combat Dogtag"
@@ -1069,7 +1069,7 @@
 
 /datum/gear/donator/bm/rawk_sat
 	name = "Rawk Satchel"
-	slot = ITEM_SLOT_HANDS
+	slot = ITEM_SLOT_BACK
 	path = /obj/item/storage/backpack/satchel/rawk_sat
 	ckeywhitelist = list("xaeshkavd","silverfoxpaws", "heathkit1", "sosnovskii")
 
@@ -1502,25 +1502,25 @@
 	ckeywhitelist = list("deltarayx")
 
 /datum/gear/donator/bm/coffin
-	name = "Black Rose atelier worker coffin"
+	name = "Black Rose atelier worker coffin."
 	slot = ITEM_SLOT_BACKPACK
 	path = /obj/item/storage/backpack/coffin
 	ckeywhitelist = list("hateredsoul", "ggishka")
 
 /datum/gear/donator/bm/coffinb2
-	name = "Black Rose atelier worker coffin"
+	name = "Black Rose atelier worker cofin"
 	slot = ITEM_SLOT_BACKPACK
 	path = /obj/item/storage/backpack/coffin/b2
 	ckeywhitelist = list("hateredsoul", "ggishka")
 
 /datum/gear/donator/bm/coffinw
-	name = "Black Rose atelier worker coffin"
+	name = "Black Rose atelier worker. Coffin"
 	slot = ITEM_SLOT_BACKPACK
 	path = /obj/item/storage/backpack/coffin/w
 	ckeywhitelist = list("hateredsoul", "ggishka")
 
 /datum/gear/donator/bm/coffinw2
-	name = "Black Rose atelier worker coffin"
+	name = "Black Rose Atelier worker coffin"
 	slot = ITEM_SLOT_BACKPACK
 	path = /obj/item/storage/backpack/coffin/w2
 	ckeywhitelist = list("hateredsoul", "ggishka")
@@ -1806,3 +1806,50 @@
 	slot = ITEM_SLOT_ICLOTHING
 	path = /obj/item/clothing/neck/tie/mu88_tie
 	ckeywhitelist = list("milidead", "hateredsoul")
+
+/datum/gear/donator/bm/cesar_tunic
+	name = "Fancy tunic"
+	slot = ITEM_SLOT_ICLOTHING
+	path = /obj/item/clothing/under/donator/bm/cesar_tunic
+	ckeywhitelist = list("nopeingeneer")
+
+/datum/gear/donator/bm/cesar_crown
+	name = "Golden laurel wreath"
+	slot = ITEM_SLOT_HEAD
+	path = /obj/item/clothing/head/laurel_crown
+	ckeywhitelist = list("nopeingeneer")
+
+///////////////////////////////////////////////
+
+/datum/gear/donator/bm/dm_pzuniform
+	name = "Grenadier uniform"
+	slot = ITEM_SLOT_ICLOTHING
+	path = /obj/item/clothing/under/donator/bm/dm_pzgrnd_uniform
+	ckeywhitelist = list("dimofon", "devildeadspace", "silverfoxpaws", "oni3288", "definitelynotnesuby")
+
+/datum/gear/donator/bm/dm_pzsuit
+	name = "Grenadier jacket"
+	slot = ITEM_SLOT_OCLOTHING
+	path = /obj/item/clothing/suit/donator/bm/dm_pzgrnd_suit
+	ckeywhitelist = list("dimofon", "devildeadspace", "silverfoxpaws", "oni3288", "definitelynotnesuby")
+
+/datum/gear/donator/bm/dm_pzhelmet
+	name = "Pionier helmet"
+	slot = ITEM_SLOT_HEAD
+	path = /obj/item/clothing/head/donator/bm/dm_pzgrnd_helmet
+	ckeywhitelist = list("dimofon", "devildeadspace", "silverfoxpaws", "oni3288", "definitelynotnesuby")
+
+/datum/gear/donator/bm/dm_case
+	name = "Infantry clothing case"
+	slot = ITEM_SLOT_HANDS
+	path = /obj/item/storage/backpack/case/dm_staff
+	ckeywhitelist = list("dimofon", "devildeadspace", "silverfoxpaws", "oni3288", "definitelynotnesuby")
+	cost = 2
+
+/datum/gear/donator/bm/dm_stg56
+	name = "StG-56"
+	slot = ITEM_SLOT_BACKPACK
+	path = /obj/item/modkit/stg56
+	ckeywhitelist = list("dimofon", "devildeadspace", "silverfoxpaws", "oni3288", "definitelynotnesuby")
+
+///////////////////////////////////////////////

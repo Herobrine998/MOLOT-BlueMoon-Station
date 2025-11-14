@@ -254,3 +254,28 @@
 	item_state = "mu88_horns"
 	icon = 'modular_bluemoon/fluffs/icons/obj/clothing/head.dmi'
 	mob_overlay_icon = 'modular_bluemoon/fluffs/icons/mob/clothing/head.dmi'
+
+///////////////////////////////////////////////
+
+/obj/item/clothing/head/donator/bm/dm_pzgrnd_helmet
+	name = "pionierkorps helmet"
+	desc = "A sturdy helmet primarily designed for military engineers. It comes with goggles for protection against dust and debris. Inside, you can see the inscription \"DM Arms\"."
+	icon = 'modular_bluemoon/fluffs/icons/obj/clothing/head.dmi'
+	mob_overlay_icon = 'modular_bluemoon/fluffs/icons/mob/clothing/head.dmi'
+	lefthand_file = 'modular_bluemoon/fluffs/icons/mob/inhands/clothing_left.dmi'
+	righthand_file = 'modular_bluemoon/fluffs/icons/mob/inhands/clothing_right.dmi'
+	icon_state = "pz_grenadierhelmet"
+	item_state = "pz_grenadierhelmet"
+	mutantrace_variation = STYLE_DIGITIGRADE | STYLE_NO_ANTHRO_ICON
+	armor = null
+	flags_inv = HIDEHAIR|HIDEEARS
+	var/adjusted = FALSE
+
+/obj/item/clothing/head/donator/bm/dm_pzgrnd_helmet/AltClick(mob/user)
+	. = ..()
+	adjusted = !adjusted
+	flags_inv = adjusted ? (HIDEHAIR) : (HIDEHAIR|HIDEEARS)
+	user.update_inv_head()
+	to_chat(user, span_info("Вы поправили шлем, изменяя комфорт ваших ушей в нём."))
+
+///////////////////////////////////////////////

@@ -155,7 +155,7 @@
 	..()
 	w_class = mask_adjusted ? WEIGHT_CLASS_NORMAL : WEIGHT_CLASS_SMALL
 	flags_inv = mask_adjusted ? (HIDEEYES|HIDEFACE|HIDEFACIALHAIR) : (HIDEEYES|HIDEFACE|HIDEFACIALHAIR|HIDESNOUT)
-	user.update_inv_head()
+	user?.update_inv_head()
 
 /obj/item/clothing/mask/gas/explorer/folded/Initialize(mapload)
 	. = ..()

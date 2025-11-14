@@ -480,3 +480,18 @@
 	righthand_file = 'modular_bluemoon/fluffs/icons/mob/inhands/clothing_right.dmi'
 	icon_state = "mu88"
 	item_state = "mu88"
+
+///////////////////////////////////////////////
+
+/obj/item/clothing/suit/donator/bm/dm_pzgrnd_suit
+	name = "motorized infantry jacket"
+	desc = "A spacious jacket designed for vehicle escort units. It features numerous pockets, as well as a sturdy leather belt! The label inside shows the inscription \"DM Arms\"."
+	icon = 'modular_bluemoon/fluffs/icons/obj/clothing/suit.dmi'
+	mob_overlay_icon = 'modular_bluemoon/fluffs/icons/mob/clothing/suit.dmi'
+	lefthand_file = 'modular_bluemoon/fluffs/icons/mob/inhands/clothing_left.dmi'
+	righthand_file = 'modular_bluemoon/fluffs/icons/mob/inhands/clothing_right.dmi'
+	mutantrace_variation = STYLE_DIGITIGRADE | STYLE_NO_ANTHRO_ICON
+	icon_state = "pz_grenadierjacket"
+	item_state = "pz_grenadierjacket"
+
+///////////////////////////////////////////////
