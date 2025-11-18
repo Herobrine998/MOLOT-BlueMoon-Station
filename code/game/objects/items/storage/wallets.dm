@@ -61,6 +61,20 @@
 	. = ..()
 	refreshID()
 
+// BLUEMOON ADD START
+/obj/item/storage/wallet/examine(mob/user)
+	. = ..()
+	. += span_notice("Ctrl-click to fast take ID.")
+
+/obj/item/storage/wallet/CtrlClick(mob/user)
+	. = ..()
+	for(var/obj/item/I in contents)
+		if(I.GetID())
+			user.put_in_hands(I)
+			refreshID()
+			return TRUE
+// BLUEMOON ADD END
+
 /obj/item/storage/wallet/proc/refreshID()
 	LAZYCLEARLIST(combined_access)
 	if(!(front_id in src))
@@ -70,6 +84,16 @@
 			front_id = I
 		LAZYINITLIST(combined_access)
 		combined_access |= I.access
+	// BLUEMOON ADD START
+	for(var/obj/item/pda/PDA in contents)
+		var/obj/item/card/id/I = PDA.GetID()
+		if(!istype(I))
+			continue
+		if(!front_id)
+			front_id = I
+		LAZYINITLIST(combined_access)
+		combined_access |= I.access
+	// BLUEMOON ADD END
 	if(ishuman(loc))
 		var/mob/living/carbon/human/H = loc
 		if(H.wear_id == src)

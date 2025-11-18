@@ -4286,6 +4286,10 @@
 /obj/effect/spawner/structure/window/reinforced/indestructable,
 /turf/open/floor/plating,
 /area/centcom/supply)
+"avF" = (
+/obj/structure/sign/painting/large/library/directional/east,
+/turf/open/floor/carpet,
+/area/centcom/holding)
 "avP" = (
 /obj/structure/sign/flag/skull,
 /obj/machinery/camera/motion/thunderdome{
@@ -22258,6 +22262,12 @@
 	},
 /turf/open/floor/plasteel/dark,
 /area/shuttle/inteq/collosus)
+"ouc" = (
+/obj/machinery/modular_computer/console/preset/curator{
+	dir = 1
+	},
+/turf/open/indestructible/hotelwood,
+/area/centcom/holding)
 "oun" = (
 /obj/structure/table/wood,
 /obj/effect/turf_decal/siding/wood,
@@ -22286,6 +22296,12 @@
 	desc = "The collar says 'The Shestaya', a xenomorph that is dressed in a maid costume and behaves as if she is accustomed to serving everyone."
 	},
 /turf/open/floor/grass/grass2,
+/area/centcom/control)
+"ovL" = (
+/obj/structure/sign/painting/library_private{
+	pixel_y = 32
+	},
+/turf/open/floor/wood/wood_tiled,
 /area/centcom/control)
 "ovZ" = (
 /obj/structure/chair/office/dark,
@@ -25983,6 +25999,14 @@
 /obj/effect/spawner/lootdrop/maintenance,
 /turf/open/floor/plating,
 /area/syndicate_mothership/control)
+"rXS" = (
+/obj/effect/turf_decal/tile/red/opposingcorners,
+/obj/structure/chair/office{
+	dir = 4
+	},
+/obj/structure/sign/painting/large/library/directional/north,
+/turf/open/floor/plasteel/white,
+/area/centcom/holding)
 "rXY" = (
 /obj/effect/turf_decal/siding{
 	color = "#2e2e2e"
@@ -26608,9 +26632,7 @@
 /turf/open/floor/mineral/abductor,
 /area/centcom/holding)
 "sCM" = (
-/obj/structure/sign/painting/library{
-	pixel_y = 32
-	},
+/obj/structure/sign/painting/large/library/directional/north,
 /turf/open/floor/wood/wood_tiled,
 /area/centcom/control)
 "sDe" = (
@@ -26640,6 +26662,10 @@
 	},
 /turf/open/floor/plasteel/stairs,
 /area/centcom/evac)
+"sEF" = (
+/obj/structure/sign/painting/large/library/directional/north,
+/turf/open/floor/carpet,
+/area/centcom/holding)
 "sFe" = (
 /obj/effect/turf_decal/tile/brown/opposingcorners,
 /obj/structure/chair/comfy/black{
@@ -27178,12 +27204,9 @@
 /turf/open/floor/carpet/blackred,
 /area/centcom/control)
 "tic" = (
-/obj/structure/sign/painting/library_secure{
-	pixel_y = 29;
-	pixel_x = 31
-	},
-/obj/structure/sign/painting/library{
-	pixel_x = 32
+/obj/structure/sign/painting/large/library_private/directional/east,
+/obj/machinery/modular_computer/console/preset/curator{
+	dir = 8
 	},
 /turf/open/floor/wood/wood_tiled,
 /area/centcom/control)
@@ -28178,6 +28201,7 @@
 	pixel_x = 4;
 	pixel_y = 10
 	},
+/obj/structure/sign/painting/large/library_private/directional/north,
 /turf/open/floor/carpet,
 /area/centcom/holding)
 "ukg" = (
@@ -28447,6 +28471,10 @@
 /obj/item/reagent_containers/hypospray/medipen,
 /turf/open/floor/plating,
 /area/syndicate_mothership/control)
+"uye" = (
+/obj/structure/sign/painting/large/library/directional/south,
+/turf/open/floor/wood/wood_tiled,
+/area/centcom/control)
 "uyi" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 9
@@ -28923,6 +28951,7 @@
 	pixel_x = -3;
 	pixel_y = 6
 	},
+/obj/structure/sign/painting/large/library/directional/north,
 /turf/open/floor/plasteel/white,
 /area/centcom/holding)
 "uWs" = (
@@ -42600,7 +42629,7 @@ rid
 bmh
 whd
 oom
-oom
+ouc
 aFe
 fON
 fON
@@ -44652,7 +44681,7 @@ iPk
 iPk
 ncJ
 aFe
-uYX
+sEF
 lpv
 lpv
 uYX
@@ -44910,9 +44939,9 @@ iPk
 ncJ
 aFe
 uAz
+avF
 uYX
-uYX
-uYX
+avF
 fmk
 fON
 fON
@@ -48769,7 +48798,7 @@ iQK
 iQK
 goB
 mWR
-wJH
+hAA
 uEQ
 rFT
 rFT
@@ -49026,7 +49055,7 @@ fUe
 tCT
 vKI
 lxr
-hAA
+wJH
 uVX
 rFT
 rFT
@@ -49798,7 +49827,7 @@ lRW
 eBI
 mWR
 wJH
-uEQ
+rXS
 rFT
 rFT
 rFT
@@ -50054,7 +50083,7 @@ dlA
 hsS
 vKI
 mWR
-hAA
+wJH
 sml
 rFT
 igm
@@ -50311,7 +50340,7 @@ nnL
 nnL
 lIV
 lxr
-wJH
+hAA
 eru
 rFT
 igm
@@ -73564,7 +73593,7 @@ xVG
 aZV
 kIw
 aZV
-scz
+uye
 aio
 ipM
 mlM
@@ -74849,7 +74878,7 @@ xVG
 fPa
 qUl
 xVG
-scz
+uye
 aio
 ipM
 mlM
@@ -75873,7 +75902,7 @@ upw
 bEK
 aCJ
 atN
-kHG
+ovL
 fPa
 fPa
 fPa
