@@ -1,13 +1,13 @@
 import { resolveAsset } from '../assets';
-import { useBackend, useLocalState } from '../backend';
+import { useBackend, useSharedState } from '../backend';
 import { Button, NoticeBox, Section, Stack, Tabs, Input } from '../components';
 import { NtosWindow } from '../layouts';
 
 export const NtosPortraitPrinter = (props, context) => {
   const { act, data } = useBackend(context);
-  const [tabIndex, setTabIndex] = useLocalState(context, 'tabIndex', 0);
-  const [listIndex, setListIndex] = useLocalState(context, 'listIndex', 0);
-  const [query, setQuery] = useLocalState(context, 'query', '');
+  const [tabIndex, setTabIndex] = useSharedState(context, 'tabIndex', 0);
+  const [listIndex, setListIndex] = useSharedState(context, 'listIndex', 0);
+  const [query, setQuery] = useSharedState(context, 'query', '');
   const {
     library,
     library_secure,
@@ -29,27 +29,27 @@ export const NtosPortraitPrinter = (props, context) => {
 
   const TABS = [
     {
-      name: 'Common Portraits',
+      name: 'Common',
       asset_prefix: "library",
       list: library,
     },
     {
-      name: 'Secure Portraits',
+      name: 'Secure',
       asset_prefix: "library_secure",
       list: library_secure,
     },
     {
-      name: 'Private Portraits',
+      name: 'Private',
       asset_prefix: "library_private",
       list: library_private,
     },
     {
-      name: 'Large Portraits',
+      name: 'Large',
       asset_prefix: "library_large",
       list: library_large,
     },
     {
-      name: 'Large Private Portraits',
+      name: 'Large Private',
       asset_prefix: "library_large_private",
       list: library_large_private,
     },
@@ -124,7 +124,7 @@ export const NtosPortraitPrinter = (props, context) => {
                 <Stack.Item grow>
                   <Input
                     fluid
-                    placeholder="Search portraits..."
+                    placeholder="Search paintings..."
                     value={query}
                     onInput={(_e, value) => {
                       if (query === "" && value !== "") {
