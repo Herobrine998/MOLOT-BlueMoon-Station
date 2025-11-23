@@ -692,6 +692,12 @@
 	path = /obj/item/clothing/accessory/hateredsoul_dogtag/syndie
 	ckeywhitelist = list("hateredsoul", "ggishka", "arion1234", "swgitty", "sw00ty", "kingdeaths", "sierraiv", "ordinarylife", "milidead")
 
+/datum/gear/donator/bm/SATTdogtag
+	name = "PAWS Patch"
+	slot = ITEM_SLOT_BACKPACK
+	path = /obj/item/clothing/accessory/paws_patch
+	ckeywhitelist = list("devildeadspace", "mikolaostavkin", "cupteazee", "dimofon", "dimakr", "definitelynotnesuby", "scramblescream", "tblkba", "hellsinggc", "aurses")
+
 /datum/gear/donator/bm/h_soul_coat
 	name = "Black coat"
 	slot = ITEM_SLOT_NECK
