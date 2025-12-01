@@ -495,3 +495,15 @@
 	item_state = "pz_grenadierjacket"
 
 ///////////////////////////////////////////////
+
+/obj/item/clothing/suit/donator/bm/apronchef_red
+	name = "Gubby Family Apron"
+	desc = "Ярко красный фартук с чёрно белыми узорами, немного потрёпан временем"
+	icon = 'modular_bluemoon/fluffs/icons/obj/clothing/suit.dmi'
+	mob_overlay_icon = 'modular_bluemoon/fluffs/icons/mob/clothing/suit.dmi'
+	mutantrace_variation = STYLE_DIGITIGRADE | STYLE_NO_ANTHRO_ICON
+	blood_overlay_type = "armor"
+	body_parts_covered = CHEST|GROIN
+	icon_state = "apronchef_red"
+	item_state = "apronchef_red"
+	allowed = list(/obj/item/kitchen)
