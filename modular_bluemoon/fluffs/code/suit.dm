@@ -507,3 +507,17 @@
 	icon_state = "apronchef_red"
 	item_state = "apronchef_red"
 	allowed = list(/obj/item/kitchen)
+
+///////////////////////////////////////////////
+
+/obj/item/clothing/suit/toggle/shark
+	name = "Shark Pajamas"
+	desc = "Soft shark-shaped pajamas, isn't it cute?"
+	icon = 'modular_bluemoon/fluffs/icons/obj/clothing/suit.dmi'
+	mob_overlay_icon = 'modular_bluemoon/fluffs/icons/mob/clothing/suit.dmi'
+	anthro_mob_worn_overlay = 'modular_bluemoon/fluffs/icons/mob/clothing/suit_digi.dmi'
+	mutantrace_variation = STYLE_DIGITIGRADE
+	flags_inv = HIDEJUMPSUIT
+	icon_state = "shark"
+	item_state = "bluewizrobe"
+	togglename = "buttons"

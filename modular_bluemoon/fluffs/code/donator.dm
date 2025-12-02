@@ -1914,3 +1914,11 @@
 	path = /obj/item/clothing/suit/donator/bm/apronchef_red
 	ckeywhitelist = list("artgel11")
 
+///////////////////////////////////////////////
+
+/datum/gear/donator/bm/shark_pajamas
+	name = "Shark Pajamas"
+	slot = ITEM_SLOT_ICLOTHING
+	path = /obj/item/clothing/suit/toggle/shark
+	ckeywhitelist = list("shizalrp", "deltarayx")
+
