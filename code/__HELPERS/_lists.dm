@@ -343,6 +343,73 @@
 		result = first ^ second
 	return result
 
+/**
+ * Выбирает ключ из ассоциативного списка по "процентам".
+ * L - ассоциативный список, формата list("key" = процент)
+ * ascending = FALSE — идти от больших процентов к меньшим, TRUE наоборот
+ * default - Значение, возвращаемое, если ни один prob() не сработал
+ *
+ * Идет прямой перебор от большего процента к меньшему. (или наоборот, в зависимости от ascending)
+ * Т.е. это не прямой рандом, а элементы с меньшим (или большим, в зависимости от ascending) шансом имеют возможность выбраться, только если все остальное не сработало.
+ * Несколько примеров работы:
+ * list("a" = 1, "b" = 1, "c" = 50, "d" = 60, "e" = 20, "f" = 100, "g" = 150) Выпадет g с шансом 100%
+ * list("a" = 1, "b" = 1, "c" = 50, "d" = 60, "e" = 20, "f" = 100) Выпадет F с шансом 100%
+ * list("a" = 1, "b" = 1, "c" = 50, "d" = 60, "e" = 20, "f" = 90, "g" = -1, "k" = 0) Выпадет F с шансом 90%, при этом g и k никогда не смогут выпасть
+ *
+ * Возвращает один из ключей или default, если все prob() промахнулись.
+ */
+/proc/_pickpercent_core(list/L, ascending = FALSE, default = null)
+	if(!islist(L) || !L.len)
+		return default
+
+	// ascending 	=> 0..100
+	// !ascending 	=> 100..0
+	var/start = (ascending) ? 0 : 100
+	var/end   = (ascending) ? 100 : 0
+	var/step  = (ascending) ? 1 : -1
+
+	for(var/p = start; p != end + step; p += step)
+		// Собираем ключи с таким процентом p
+		var/list/candidates
+		for(var/key in L)
+			var/val = clamp(round(L[key]), 0, 100)
+			if(val != p)
+				continue
+			if(!candidates)
+				candidates = list()
+			candidates += key
+
+		if(!candidates)
+			continue
+
+		// Внутри одного процента перебираем кандидатов в случайном порядке
+		// без повторов (чтобы "равные" шансы были честнее).
+		while(candidates.len)
+			var/idx = rand(1, candidates.len)
+			var/choice = candidates[idx]
+			candidates.Cut(idx, idx + 1)
+
+			var/prob_val = clamp(round(L[choice]), 0, 100)
+			if(prob(prob_val))
+				return choice
+
+	// Если ничего не сработало — возвращаем default значение
+	return default
+
+/**
+ * Вариант pickpercent "от большего к меньшему"
+ * (сначала 100%, потом 99, 98, ... 0)
+*/
+/proc/pickpercent_desc(list/L, default = null)
+	return _pickpercent_core(L, FALSE)
+
+/**
+ * Вариант pickpercent "от меньшего к большему"
+ * (сначала 0%, 1, 2, ... 100)
+*/
+/proc/pickpercent_asc(list/L, default = null)
+	return _pickpercent_core(L, TRUE)
+
 //Picks a random element from a list based on a weighting system:
 //1. Adds up the total of weights for each element
 //2. Gets a number between 1 and that total
