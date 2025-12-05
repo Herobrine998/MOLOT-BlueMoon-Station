@@ -25,7 +25,7 @@
 
 /obj/item/storage/box
 	name = "Box"
-	desc = "It's just an ordinary box."
+	desc = "Самая обыкновенная коробка."
 	icon_state = "box"
 	item_state = "syringe_kit"
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
@@ -518,7 +518,7 @@
 
 /obj/item/storage/box/trackimp
 	name = "boxed tracking implant kit"
-	desc = "Box full of scum-bag tracking utensils."
+	desc = "Коробка с отслеживающими имплантами для ваших подонков."
 	illustration = "implant"
 
 /obj/item/storage/box/trackimp/PopulateContents()
@@ -530,7 +530,7 @@
 
 /obj/item/storage/box/minertracker
 	name = "boxed tracking implant kit"
-	desc = "For finding those who have died on the accursed lavaworld."
+	desc = "Для нахождения померших на многократно клятом Лаваленде."
 	illustration = "implant"
 
 /obj/item/storage/box/minertracker/PopulateContents()
@@ -542,7 +542,7 @@
 
 /obj/item/storage/box/chemimp
 	name = "boxed chemical implant kit"
-	desc = "Box of stuff used to implant chemicals."
+	desc = "Коробка вещей для имплантации отложенных препаратов."
 	illustration = "implant"
 
 /obj/item/storage/box/chemimp/PopulateContents()
@@ -563,7 +563,7 @@
 
 /obj/item/storage/box/bodybags
 	name = "body bags"
-	desc = "The label indicates that it contains body bags."
+	desc = "Этикетка даёт знать, что внутри мешки для трупов."
 	illustration = "bodybags"
 
 /obj/item/storage/box/bodybags/PopulateContents()
@@ -573,7 +573,7 @@
 
 /obj/item/storage/box/rxglasses
 	name = "box of prescription glasses"
-	desc = "This box contains nerd glasses."
+	desc = "В этой коробке полно ботанских очков!"
 	illustration = "glasses"
 
 /obj/item/storage/box/rxglasses/PopulateContents()
