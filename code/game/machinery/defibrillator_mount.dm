@@ -38,6 +38,14 @@
 		use_power(200)
 		defib.cell.give(180) //90% efficiency, slightly better than the cell charger's 87.5%
 		update_icon()
+	var/turf/open/floor/F = get_turf(src)
+	if(istype(F, /turf/open/floor))
+		visible_message(span_warning("Дефибрилляторная стойка упала без стабильной опоры!"))
+		new /obj/item/wallframe/defib_mount(drop_location())
+		if(defib)
+			defib.drop_location()
+		qdel(src)
+		return
 
 /obj/machinery/defibrillator_mount/update_overlays()
 	. = ..()

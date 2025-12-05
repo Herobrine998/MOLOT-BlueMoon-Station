@@ -1922,3 +1922,22 @@
 	path = /obj/item/clothing/suit/toggle/shark
 	ckeywhitelist = list("shizalrp", "deltarayx")
 
+///////////////////////////////////////////////
+
+/datum/gear/donator/bm/lsweater
+	name = "Sweater"
+	slot = ITEM_SLOT_OCLOTHING
+	path = /obj/item/clothing/suit/toggle/lsweater
+	ckeywhitelist = list("lindaastereih")
+
+/datum/gear/donator/bm/longtie
+	name = "Long Tie"
+	slot = ITEM_SLOT_NECK
+	path = /obj/item/clothing/neck/petcollar/longtie
+	ckeywhitelist = list("lindaastereih")
+
+/datum/gear/donator/bm/lskirt
+	name = "Short Skirt"
+	slot = ITEM_SLOT_ICLOTHING
+	path = /obj/item/clothing/under/dress/skirt/lskirt
+	ckeywhitelist = list("lindaastereih")

@@ -521,3 +521,17 @@
 	icon_state = "shark"
 	item_state = "bluewizrobe"
 	togglename = "buttons"
+
+///////////////////////////////////////////////
+
+/obj/item/clothing/suit/toggle/lsweater
+	name = "Sweater"
+	desc = "A sweater belonging to some fox"
+	icon = 'modular_bluemoon/fluffs/icons/obj/clothing/suit.dmi'
+	mob_overlay_icon = 'modular_bluemoon/fluffs/icons/mob/clothing/suit.dmi'
+	mutantrace_variation = STYLE_DIGITIGRADE | STYLE_NO_ANTHRO_ICON
+	body_parts_covered = GROIN|ARMS
+	icon_state = "lsweater"
+	item_state = "lsweater"
+	togglename = "buttons"
+	alternate_worn_layer = SUIT_STORE_LAYER
