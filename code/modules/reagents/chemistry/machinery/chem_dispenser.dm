@@ -121,7 +121,7 @@
 		. += "<span class='notice'>Технический люк [src] открыт!</span>"
 	if(in_range(user, src) || isobserver(user))
 		. += "<span class='notice'>Статус-дисплей сообщает:\n\
-		- Перезаряжается <b>[recharge_amount]</b> единиц заряда в цикл.\n\
+		- Перезаряжается <b>[recharge_amount]</b> ед. заряда в цикл.\n\
 		- Энергоэффективность повышена на <b>[round((powerefficiency*1000)-100, 1)]%</b>.</span>"
 
 /obj/machinery/chem_dispenser/process()

@@ -272,6 +272,7 @@ GLOBAL_LIST_INIT(mat_ru_nominative, list(
 	"cardboard" = "картон",
 	"bone" = "кость",
 	"bamboo" = "бамбук",
+	"rigid material" = "твёрдый материал",
 ))
 
 /// Лист-словарь для examine string'а материалов в родительном падеже
@@ -304,4 +305,5 @@ GLOBAL_LIST_INIT(mat_ru_genitive, list(
 	"cardboard" = "картона",
 	"bone" = "кости",
 	"bamboo" = "бамбука",
+	"rigid material" = "твёрдого материала",
 ))

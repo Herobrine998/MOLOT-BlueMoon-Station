@@ -391,7 +391,6 @@
 				protected = TRUE
 		if(method == TOUCH && protected)
 			var/obj/item/clothing/worn_suit = H.wear_suit
-			var/obj/item/clothing/worn_helmet = H.head
 			M.visible_message("<span class='danger'>[H] был[H.ru_a()] чем-то облит[H.ru_a()], но оно стекло вниз по [worn_suit.name]!</span>", \
 						"<span class='userdanger'>Меня чем-то облили, но оно стекло вниз по [worn_suit.name]!</span>")
 			playsound(src.loc, 'modular_bluemoon/krashly/sound/items/watersplash.ogg', 40, 1)
@@ -807,11 +806,16 @@
 	..()
 
 /datum/reagent/medicine/ephedrine/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
-	// if(DT_PROB(10 * (1-creation_purity), delta_time) && iscarbon(M))
-	// 	var/obj/item/I = M.get_active_held_item()
-	// 	if(I && M.dropItemToGround(I))
-	// 		to_chat(M, span_notice("Your hands spaz out and you drop what you were holding!"))
-	// 		M.Jitter(10)
+	if(DT_PROB(7.5, delta_time) && iscarbon(M))
+		var/obj/item/Iactive = M.get_active_held_item()
+		if(Iactive && M.dropItemToGround(Iactive))
+			to_chat(M, span_notice("Your hands spaz out and you drop what you were holding!"))
+			M.Jitter(10)
+	if(DT_PROB(5, delta_time) && iscarbon(M))
+		var/obj/item/Isecond = M.get_inactive_held_item()
+		if(Isecond && M.dropItemToGround(Isecond))
+			to_chat(M, span_notice("Your hands spaz out and you drop what you were holding!"))
+			M.Jitter(10)
 
 	M.AdjustAllImmobility(-20 * REM * delta_time)
 	M.adjustStaminaLoss(-1 * REM * delta_time, FALSE)
