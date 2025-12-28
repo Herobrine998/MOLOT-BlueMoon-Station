@@ -679,3 +679,10 @@
 	icon_state = "vella"
 	icon = 'modular_bluemoon/icons/obj/toys/plushes.dmi'
 	squeak_override = list('modular_splurt/sound/voice/catpeople/cat_mrrp1.ogg' = 1)
+
+/obj/item/toy/plush/bm/belfor
+	name = "Belfor plushie"
+	desc = "Белая как сахарная вата игрушка кота-учёного Синдиката. Его пушистый хвост в форме запятой лишь добавляет контраста. От него пахнет бридингом. Стоп.. что такое бридинг?"
+	icon_state = "belfor"
+	icon = 'modular_bluemoon/icons/obj/toys/plushes.dmi'
+	squeak_override = list('modular_splurt/sound/voice/meow_meme.ogg' = 1, 'modular_splurt/sound/voice/woof.ogg' = 1)

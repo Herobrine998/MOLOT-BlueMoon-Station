@@ -1867,6 +1867,12 @@
 	path = /obj/item/toy/plush/bm/vella
 	ckeywhitelist = list("aurses")
 
+/datum/gear/donator/bm/belfor
+	name = "Belfor plushie"
+	slot = ITEM_SLOT_BACKPACK
+	path = /obj/item/toy/plush/bm/belfor
+	ckeywhitelist = list("belf0r")
+
 ///////////////////////////////////////////////
 
 /datum/gear/donator/bm/dm_pzuniform

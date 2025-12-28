@@ -317,3 +317,13 @@
 	ME.attach(src)
 	ME = new /obj/item/mecha_parts/mecha_equipment/medical/sleeper
 	ME.attach(src)
+
+/obj/item/storage/belt/cummerbund/slaver
+	name = "ammo cummerbund"
+	desc = "A pleated sash that holds kinky ammo."
+
+/obj/item/storage/belt/cummerbund/slaver/PopulateContents()
+	new /obj/item/ammo_box/magazine/sniper_rounds/soporific/lewd(src)
+	new /obj/item/ammo_box/magazine/sniper_rounds/soporific/lewd(src)
+	new /obj/item/ammo_box/magazine/sniper_rounds/soporific/lewd(src)
+	new /obj/item/ammo_box/magazine/sniper_rounds/soporific/lewd(src)

@@ -911,20 +911,22 @@
 	var/escchance
 	if(HAS_TRAIT(src, TRAIT_GARROTED))
 		escchance = 3
-	else
+	else if(istype(mind, /datum/mind) && istype(mind.martial_art, /datum/martial_art))
+		escchance = mind.martial_art.resist_grab_chance
+	else // Обычно БИ будет всегда и "базовому" уже выставлено 30, фейлчек для ТЕОРЕТИЧЕСКИХ случаев отсутствия
 		escchance = 30
 	if(pulledby.grab_state > GRAB_PASSIVE)
 		if(CHECK_MOBILITY(src, MOBILITY_RESIST) && prob(escchance/pulledby.grab_state))
-			pulledby.visible_message("<span class='danger'>[src] has broken free of [pulledby]'s grip!</span>",
-				"<span class='danger'>[src] has broken free of your grip!</span>", target = src,
-				target_message = "<span class='danger'>You have broken free of [pulledby]'s grip!</span>")
+			pulledby.visible_message(span_danger("[src] вырывается из хватки [pulledby]!"),
+				span_danger("[src] вырывается из вашей хватки!"), target = src,
+				target_message = span_danger("Вы вырвались из хватки [pulledby]!"))
 			pulledby.stop_pulling()
 			return TRUE
 		else if(moving_resist && client) //we resisted by trying to move // this is a horrible system and whoever thought using client instead of mob is okay is not an okay person
 			client.move_delay = world.time + 20
-		pulledby.visible_message("<span class='danger'>[src] resists against [pulledby]'s grip!</span>",
-			"<span class='danger'>[src] resists against your grip!</span>", target = src,
-			target_message = "<span class='danger'>You resist against [pulledby]'s grip!</span>")
+		pulledby.visible_message(span_danger("[src] сопротивляется хватке [pulledby]!"),
+			span_danger("[src] сопротивляется вашей хватке!"), target = src,
+			target_message = span_danger("Вы сопротивляетесь хватке [pulledby]!"))
 	else
 		pulledby.stop_pulling()
 		return TRUE
@@ -1125,15 +1127,18 @@
 /mob/living/proc/harvest(mob/living/user) //used for extra objects etc. in butchering
 	return
 
-/mob/living/canUseTopic(atom/movable/M, be_close=FALSE, no_dextery=FALSE, no_tk=FALSE, check_resting=FALSE)
+/mob/living/canUseTopic(atom/movable/M, be_close=FALSE, no_dextery=FALSE, no_tk=FALSE, check_resting=FALSE, silent = FALSE)
 	if(incapacitated())
-		to_chat(src, "<span class='warning'>Вы не можете этого сделать в нынешнем состоянии!</span>")
+		if(!silent)
+			to_chat(src, "<span class='warning'>Вы не можете этого сделать в нынешнем состоянии!</span>")
 		return FALSE
 	if(be_close && !in_range(M, src))
-		to_chat(src, "<span class='warning'>Вы слишком далеко!</span>")
+		if(!silent)
+			to_chat(src, "<span class='warning'>Вы слишком далеко!</span>")
 		return FALSE
 	if(!no_dextery)
-		to_chat(src, "<span class='warning'>У тебя не хватит ловкости, чтобы сделать это!</span>")
+		if(!silent)
+			to_chat(src, "<span class='warning'>У тебя не хватит ловкости, чтобы сделать это!</span>")
 		return FALSE
 	return TRUE
 
@@ -1521,3 +1526,49 @@
 	sterilize_power = 0
 	_sterilize_expire = 0
 	_sterilize_timer_id = null
+
+/**
+ * Универсальный прок для проверки наличия боли
+ * limb - Если боль нужно посчиать от отдельной конечности (Протезы не болят)
+ */
+/mob/proc/has_pain(obj/item/bodypart/limb)
+	return PAIN_NO
+
+/mob/living/has_pain(obj/item/bodypart/limb)
+	if(HAS_TRAIT(src, TRAIT_ROBOTIC_ORGANISM) || HAS_TRAIT(src, TRAIT_PAINKILLER))
+		return PAIN_NO
+	else if(HAS_TRAIT(src, TRAIT_BLUEMOON_HIGH_PAIN_THRESHOLD))
+		return PAIN_LOW
+	else if(reagents?.has_reagent(/datum/reagent/determination))
+		return PAIN_MEDIUM
+
+	return PAIN_FULL
+
+/**
+ * Прок для выбора эмоции боли
+ * realagony - TRUE повышает "максимальную эмоцию" боли до realagony
+ */
+/mob/proc/get_pain_emote(pain_level, realagony = FALSE)
+	if(!pain_level)
+		return ""
+	switch(pain_level)
+		if(PAIN_FULL)
+			return realagony ? "realagony" : pick("scream","pain")
+		if(PAIN_MEDIUM) // Позже заменить на шипит от боли, кривится от боли
+			return realagony ? "realagony" : pick("scream","pain")
+		if(PAIN_LOW)
+			return realagony ? pick("scream","pain") : "twitch"
+		else
+			return pick("scream","pain")
+
+/**
+ * Прок запускает эмоцию боли
+ * pain_level - Уровень боли полученный из has_pain()
+ * limb - Если не задан pain_level и боль нужно посчитать от отдельной конечности (Протезы не болят)
+ * realagony - TRUE повышает "максимальную эмоцию" боли до realagony
+ */
+/mob/proc/pain_emote(pain_level = null, obj/item/bodypart/limb, realagony = FALSE)
+	if(isnull(pain_level))
+		pain_level = has_pain(limb)
+
+	return emote(get_pain_emote(pain_level, realagony))

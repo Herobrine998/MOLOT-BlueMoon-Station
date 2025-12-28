@@ -37,6 +37,7 @@
 			. += "<span class='notice'>Из-за кода тревоги, фиксирующие зажимы могут быть переключены ID-картой.</span>"
 		else
 			. += "<span class='notice'>Фиксирующие зажимы могут быть [clamps_locked ? "раз" : "за"]блокированы ID-картой с доступами.</span>"
+  . += span_notice("Выглядит <b>откручиваемым</b>.")
 
 /obj/machinery/defibrillator_mount/process()
 	if(defib && defib.cell && defib.cell.charge < defib.cell.maxcharge && is_operational())
@@ -142,9 +143,10 @@
 /obj/machinery/defibrillator_mount/wrench_act(mob/living/user, obj/item/I)
 	if(defib)
 		balloon_alert("Нужно вынуть дефибриллятор!")
-		return TRUE
-	new /obj/item/wallframe/defib_mount(drop_location())
-	qdel(src)
+	else if(I.use_tool(src, user, 1.5 SECONDS))
+		new /obj/item/wallframe/defib_mount(drop_location())
+		qdel(src)
+	return TRUE
 
 /obj/machinery/defibrillator_mount/AltClick(mob/living/carbon/user)
 	. = ..()

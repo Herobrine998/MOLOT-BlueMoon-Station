@@ -148,6 +148,13 @@ GLOBAL_LIST_INIT(slaver_gear, subtypesof(/datum/slaver_gear))
 	category = "Firearms"
 	cost = 50000
 
+/datum/slaver_gear/p50crocineammo
+	name = "Ammo (.50 Crocine)"
+	description = "Lewd ammo filled with aphrodisiac and capabable of knocking targets down. 12 rounds total. Compatible with .50 cal slaver sniper rifle."
+	build_path = /obj/item/storage/belt/cummerbund/slaver
+	category = "Firearms"
+	cost = 15000
+
 /datum/slaver_gear/freedom
 	name = "Freedom Implant"
 	description = "An implant that instantly releases you from handcuffs."
