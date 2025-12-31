@@ -911,7 +911,7 @@
 	var/escchance
 	if(HAS_TRAIT(src, TRAIT_GARROTED))
 		escchance = 3
-	else if(istype(mind, /datum/mind) && istype(mind.martial_art, /datum/martial_art))
+	else if(istype(mind, /datum/mind) && istype(mind.martial_art, /datum/martial_art) && mind.martial_art.can_use(src))
 		escchance = mind.martial_art.resist_grab_chance
 	else // Обычно БИ будет всегда и "базовому" уже выставлено 30, фейлчек для ТЕОРЕТИЧЕСКИХ случаев отсутствия
 		escchance = 30
