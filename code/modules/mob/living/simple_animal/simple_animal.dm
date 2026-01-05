@@ -95,7 +95,7 @@
 
 	///Hot simple_animal baby making vars.
 	var/list/childtype = null
-	var/next_scan_time = 0
+	COOLDOWN_DECLARE(childmaker)
 	///Sorry, no spider+corgi buttbabies.
 	var/animal_species
 
@@ -441,16 +441,17 @@
 		setMovetype(initial(movement_type))
 
 /mob/living/simple_animal/proc/make_babies() // <3 <3 <3
-	if(gender != FEMALE || stat || next_scan_time > world.time || !childtype || !animal_species || !SSticker.IsRoundInProgress())
+	if(!COOLDOWN_FINISHED(src, childmaker))
 		return
-	next_scan_time = world.time + 400
-	var/alone = 1
+	if(gender != FEMALE || stat || !childtype || !animal_species || !SSticker.IsRoundInProgress())
+		return
+	COOLDOWN_START(src, childmaker, 40 SECONDS)
 	var/mob/living/simple_animal/partner
 	var/children = 0
 	for(var/mob/M in view(7, src))
 		if(M.stat != CONSCIOUS) //Check if it's conscious FIRST.
 			continue
-		else if(istype(M, childtype)) //Check for children SECOND.
+		else if(M.type in childtype) //Check for children SECOND.
 			children++
 		else if(istype(M, animal_species))
 			if(M.ckey)
@@ -461,7 +462,7 @@
 		else if(isliving(M) && !faction_check_mob(M)) //shyness check. we're not shy in front of things that share a faction with us.
 			return //we never mate when not alone, so just abort early
 
-	if(alone && partner && children < 3)
+	if(partner && children < 3)
 		var/childspawn = pickweight(childtype)
 		var/turf/target = get_turf(loc)
 		if(target)
