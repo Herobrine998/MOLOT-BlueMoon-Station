@@ -949,7 +949,7 @@
 	name = "Dread Kit"
 	slot = ITEM_SLOT_ICLOTHING
 	path = /obj/item/modkit/dreadmk3_kit
-	ckeywhitelist = list("stasdvrz", "mrsko", "akinight", "vovakr", "roninqwerty")
+	ckeywhitelist = list("stasdvrz", "mrsko", "akinight", "vovakr", "roninqwerty","pingvas","lev1932","dragon9090")
 
 /datum/gear/donator/bm/old_laser_kit
 	name = "AER9 Kit"
@@ -1123,21 +1123,21 @@
 	name = "Laced lingerie bra"
 	slot = ITEM_SLOT_OCLOTHING
 	path = /obj/item/clothing/underwear/shirt/bra/troubleneko_bra
-	ckeywhitelist = list("troubleneko17th")
+	ckeywhitelist = list("troubleneko17th", "tblkba")
 	subcategory = LOADOUT_SUBCATEGORIES_DON03
 
 /datum/gear/donator/bm/troubleneko_panties
 	name = "Panties"
 	slot = ITEM_SLOT_OCLOTHING
 	path = /obj/item/clothing/underwear/briefs/troubleneko_panties
-	ckeywhitelist = list("troubleneko17th")
+	ckeywhitelist = list("troubleneko17th", "tblkba")
 	subcategory = LOADOUT_SUBCATEGORIES_DON03
 
 /datum/gear/donator/bm/troubleneko_socks
 	name = "Socks"
 	slot = ITEM_SLOT_OCLOTHING
 	path = /obj/item/clothing/underwear/socks/thigh/troubleneko_socks
-	ckeywhitelist = list("troubleneko17th")
+	ckeywhitelist = list("troubleneko17th", "tblkba")
 	subcategory = LOADOUT_SUBCATEGORIES_DON03
 
 /datum/gear/donator/bm/f_haori
@@ -1981,3 +1981,9 @@
 	slot = ITEM_SLOT_ICLOTHING
 	path = /obj/item/clothing/under/donator/bm/verdant
 	ckeywhitelist = list("dragon9090")
+
+/datum/gear/donator/bm/imperium_flags
+	name = "Invisible Belt Kit"
+	slot = ITEM_SLOT_BACKPACK
+	path = /obj/item/storage/box/imperium_flags
+	ckeywhitelist = list("domilion")
