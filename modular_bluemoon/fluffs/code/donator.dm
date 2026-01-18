@@ -1333,7 +1333,7 @@
 	name = "Halved Violet Spectacles"
 	slot = ITEM_SLOT_EYES
 	path = /obj/item/clothing/glasses/halvedspectacles
-	ckeywhitelist = list("silverfoxpaws")
+	ckeywhitelist = list("silverfoxpaws", "ninjapikachushka")
 
 /////////////////////////////////////
 
