@@ -1768,6 +1768,14 @@
 	restricted_desc = "Security, Head of Security, Warden, Detective, Security Officer, Brig Physician, Peacekeeper, Blueshield."
 	restricted_roles = list("Captain", "Head of Security", "Warden", "Detective", "Security Officer", "Brig Physician", "Peacekeeper", "Blueshield")
 
+/datum/gear/donator/bm/modsuit_magnate_heavy
+	name = "Heavy Magnete Modsuit Plate"
+	slot = ITEM_SLOT_BACKPACK
+	path = /obj/item/mod/construction/armor/magnate/heavy
+	ckeywhitelist = list("cnaperdodo")
+	restricted_desc = "Captain."
+	restricted_roles = list("Captain")
+
 /datum/gear/donator/bm/mentalplushie
 	name = "Catshark Plushie"
 	slot = ITEM_SLOT_BACKPACK
@@ -2016,4 +2024,14 @@
 	name = "Aged Robe"
 	slot = ITEM_SLOT_OCLOTHING
 	path = /obj/item/clothing/suit/donator/bm/cultist_poly
+	loadout_flags = LOADOUT_CAN_NAME | LOADOUT_CAN_DESCRIPTION | LOADOUT_CAN_COLOR_POLYCHROMIC
+	loadout_initial_colors = list("#202020", "#C5302D")
+	ckeywhitelist = list("monolithxxv")
+
+/datum/gear/donator/bm/exo_legs
+	name = "Exo Legs"
+	slot = ITEM_SLOT_FEET
+	path = /obj/item/clothing/shoes/exo_legs
+	loadout_flags = LOADOUT_CAN_NAME | LOADOUT_CAN_DESCRIPTION | LOADOUT_CAN_COLOR_POLYCHROMIC
+	loadout_initial_colors = list("#202020", "#C5302D")
 	ckeywhitelist = list("monolithxxv")
