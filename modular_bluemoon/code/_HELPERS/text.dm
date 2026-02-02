@@ -161,24 +161,32 @@
 
 	return winners
 
-/**
- * Прок берёт указанный список для jointext запятых и союза "и" текста листа, с дифферентным окочанием в конце.
- * Например, "1, 2, 3 и 4" или "1 и 2", или "1".
- *
- * Для "1 и 2" лучше юзать jointext(), если не ожидается пополнение листа в будущем (Новый код, динамический текст).
- */
-/proc/jointext_ru_comma_plus_and(list/L)
-	var/count = L.len
-	if(!count)
-		return ""
+// Прок-хелпер для examine-string'а материалов. Нужен по большей части для бэкапа неучтённых словарём материалов, а также если будут новые материалы.
+/proc/material_to_ru_nominative(mat_name)
+	var/ru_mat_name = GLOB.mat_ru_nominative[lowertext(mat_name)]
+	if(ru_mat_name)
+		return ru_mat_name
 
-	if(count == 1)
-		return L[1]
+	return mat_name
 
-	if(count == 2)
-		return "[L[1]] и [L[2]]"
+/proc/material_to_ru_genitive(mat_name)
+	var/ru_mat_name = GLOB.mat_ru_genitive[lowertext(mat_name)]
+	if(ru_mat_name)
+		return ru_mat_name
 
-	var/text = jointext(L.Copy(1, count), ", ")
-	text += " и [L[count]]"
+	return mat_name
 
-	return text
+// падежи для бюджетов
+/proc/budget_to_ru_nominative(budget_name)
+	var/ru_budget_name = GLOB.budget_ru_nominative[lowertext(budget_name)]
+	if(ru_budget_name)
+		return ru_budget_name
+
+	return budget_name
+
+/proc/budget_to_ru_genitive(budget_name)
+	var/ru_budget_name = GLOB.budget_ru_genitive[lowertext(budget_name)]
+	if(ru_budget_name)
+		return ru_budget_name
+
+	return budget_name

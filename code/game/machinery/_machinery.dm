@@ -86,7 +86,7 @@ Class Procs:
 /obj/machinery
 	name = "machinery"
 	icon = 'icons/obj/stationobjs.dmi'
-	desc = "Some kind of machine."
+	desc = "Какого-то рода машинерия."
 	verb_say = "beeps"
 	verb_yell = "blares"
 	pressure_resistance = 15
@@ -152,7 +152,8 @@ Class Procs:
 	var/is_operational = TRUE
 	///Boolean on whether this machines interact with atmos
 	var/atmos_processing = FALSE
-
+	///Machinery error message cooldown
+	COOLDOWN_DECLARE(error_message_cooldown)
 
 /obj/machinery/Initialize(mapload)
 	if(!armor)
@@ -369,11 +370,13 @@ Class Procs:
 
 /obj/machinery/proc/can_transact(obj/item/card/id/thecard, allowdepartment, silent)
 	if(!istype(thecard))
-		if(!silent)
+		if(!silent && COOLDOWN_FINISHED(src, error_message_cooldown))
+			COOLDOWN_START(src, error_message_cooldown, 6 SECONDS)
 			say("Карта не найдена.")
 		return FALSE
 	else if (!thecard.registered_account)
-		if(!silent)
+		if(!silent && COOLDOWN_FINISHED(src, error_message_cooldown))
+			COOLDOWN_START(src, error_message_cooldown, 6 SECONDS)
 			say("Аккаунт не найден.")
 		return FALSE
 //	else if(!allowdepartment && !thecard.registered_account.account_job)
@@ -571,7 +574,7 @@ Class Procs:
 		if(!panel_open)
 			panel_open = TRUE
 			icon_state = icon_state_open
-			to_chat(user, "<span class='notice'>Вы скручиваете панель обслуживания [src] с винтов.</span>")
+			to_chat(user, "<span class='notice'>Вы скручиваете винты панели обслуживания [src].</span>")
 		else
 			panel_open = FALSE
 			icon_state = icon_state_closed

@@ -104,7 +104,7 @@
 		if(ascended && user.stat == CONSCIOUS && user.client)
 			user.client.give_award(/datum/award/achievement/misc/cleanboss, user)
 
-	// Если планируются ещё улучшения (> 2), рекомендация использовать прок jointext_ru_comma_plus_and() или написать отдельную строчку улучшения
+	// Если планируются ещё улучшения (> 2), рекомендация использовать прок english_list() или написать отдельную строчку улучшения
 	if(jani_upgrades && jani_upgrades.len)
 		var/installed_janitools = jointext(jani_upgrades, " и ")
 		. += span_info("Бот снаряжён [installed_janitools].")
@@ -124,6 +124,7 @@
 	prev_access = access_card.access
 	stolen_valor = list()
 
+	GLOB.janitor_devices += src
 	prefixes = list(command, security, engineering)
 	suffixes = list(research, medical, legal)
 
@@ -132,6 +133,7 @@
 		var/atom/Tsec = drop_location()
 		weapon.force = weapon_orig_force
 		drop_part(weapon, Tsec)
+	GLOB.janitor_devices -= src
 	return ..()
 
 /mob/living/simple_animal/bot/cleanbot/turn_on()
