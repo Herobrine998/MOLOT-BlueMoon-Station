@@ -39,11 +39,11 @@
 /obj/item/resonator/proc/create_resonance(target, mob/user)
 	var/turf/target_turf = get_turf(target)
 	var/obj/effect/temp_visual/resonance/resonance_field = locate(/obj/effect/temp_visual/resonance) in target_turf
-	var/cooldown_time = lavaland_equipment_pressure_check(target_turf) ? RESONATOR_CD_NOPRESSURE : RESONATOR_CD_PRESSURE // проверяем атмосферу. Условия Лавы = низкий КД
 	if(resonance_field)
+		var/cooldown_time = lavaland_equipment_pressure_check(target_turf) ? RESONATOR_CD_NOPRESSURE : RESONATOR_CD_PRESSURE // проверяем атмосферу. Условия Лавы = низкий КД
 		resonance_field.damage_multiplier = quick_burst_mod
 		resonance_field.burst()
-		user.DelayNextAction(cooldown_time) // Ударили поле - индивидуальный КД.
+		user.DelayNextAction(cooldown_time)
 		return STOP_ATTACK_PROC_CHAIN
 	if(LAZYLEN(fields) < fieldlimit)
 		new /obj/effect/temp_visual/resonance(target_turf, user, src, mode, adding_failure)
@@ -51,8 +51,8 @@
 
 /obj/item/resonator/pre_attack(atom/target, mob/user, params)
 	if(check_allowed_items(target, TRUE))
-		return create_resonance(target, user) // Останавливаем дальнейшую обработку атаки
-	..()
+		create_resonance(target, user)
+	return ..()
 
 //resonance field, crushes rock, damages mobs
 /obj/effect/temp_visual/resonance
