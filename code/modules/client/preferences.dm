@@ -378,6 +378,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/list/loadout_data = list()
 	var/list/unlockable_loadout_data = list()
 	var/loadout_slot = 1 //goes from 1 to MAXIMUM_LOADOUT_SAVES
+	var/loadout_enabled = TRUE // BLUEMOON ADD - переключатель: спавниться с лодаутом или нет
 	var/gear_category
 	var/gear_subcategory
 
@@ -686,8 +687,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/is_modern_theme = (new_character_creator && !!findtext(charcreation_theme, "modern"))
 	var/list/dat
 	if(new_character_creator)
-		// Для Modern-интерфейса дополнительно инжектим палитру как конкретные CSS значения,
-		// чтобы темы переключались как в PR #2535 (не завися от поддержки CSS variables).
+		// Compact inline CSS: конкретные значения цветов для IE/Trident-совместимости BYOND-браузера.
+		// Enhanced decoration — CSS-класс .csetup-decoration-enhanced (переключается без inline CSS).
 		var/modern_palette_css = ""
 		if(is_modern_theme)
 			var/list/theme = get_character_setup_palette_modern()
@@ -710,87 +711,37 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					button_radius = "4px"
 				if("round")
 					button_radius = "7px"
+			// Custom-палитра: также выставляем CSS-переменные для современных браузеров (rgba(var(...)) и пр.)
+			var/custom_vars = ""
+			if(charcreation_theme == "modern_custom")
+				var/accent_hex = replacetext(accent_color, "#", "")
+				var/accent_r = text2num("0x[copytext(accent_hex, 1, 3)]")
+				var/accent_g = text2num("0x[copytext(accent_hex, 3, 5)]")
+				var/accent_b = text2num("0x[copytext(accent_hex, 5, 7)]")
+				custom_vars = "--csetup-bg:[bg_primary];--csetup-panel:[bg_secondary];--csetup-panel-2:[bg_secondary];--csetup-border:[border_color];--csetup-text:[text_primary];--csetup-muted:[text_secondary];--csetup-accent:[accent_color];--csetup-accent-rgb:[accent_r],[accent_g],[accent_b];--csetup-btn-bg:[button_bg];--csetup-btn-hover:[button_hover];--csetup-btn-active:[button_active];--csetup-btn-active-text:[button_text];"
 			modern_palette_css = "<style>\n\
-	.csetup-root{ background-color:[bg_primary]; color:[text_primary]; font-family: Verdana, Tahoma, Arial, sans-serif; margin:0; padding:6px; min-height:100vh; position:relative; background-image:[bg_pattern]; background-size:auto; will-change:auto; }\n\
-	.csetup-root a, .csetup-root a:link, .csetup-root a:visited{ color:[text_primary]; text-decoration:none; padding:4px 8px; margin:1px; display:inline-block; background-color:[button_bg]; border-radius:[button_radius]; border:1px solid [border_color]; cursor:pointer; font-size:12px; vertical-align:middle; transition:background-color 120ms ease-out; }\n\
-	.csetup-root a:hover{ background-color:[button_hover]; }\n\
-	.csetup-root .linkOn{ background-color:[button_active]; color:[button_text]; }\n\
-	.csetup-root a.linkOff, .csetup-root .linkOff{ color:[text_secondary]; cursor:not-allowed; opacity:0.6; }\n\
-	.csetup-root .csetup-ai-core-preview{ margin-top:4px; display:inline-block; }\n\
-	.csetup-root .csetup-ai-core-preview img{ width:64px; height:64px; border:1px solid [border_color]; border-radius:10px; background-color:[bg_primary]; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06); image-rendering: pixelated; -ms-interpolation-mode: nearest-neighbor; }\n\
-	.csetup-root hr{ border:none; height:1px; background-color:[border_color]; margin:10px 0; }\n\
-	.csetup-root table{ background-color:[bg_secondary]; border-collapse:collapse; width:100%; border:1px solid [border_color]; border-radius:10px; overflow:hidden; }\n\
-	.csetup-root td, .csetup-root th{ padding:6px 8px; color:[text_primary]; text-align:left; border-bottom:1px solid [border_color]; }\n\
-	.csetup-root td:last-child, .csetup-root th:last-child{ border-right:none; }\n\
-	.csetup-root td, .csetup-root th{ border-right:1px solid [border_color]; }\n\
-	.csetup-root .csetup_character_node{ background-color:[bg_secondary]; border:1px solid [border_color]; }\n\
-	.csetup-root .csetup_character_label{ color:[text_secondary]; }\n\
-	.csetup-root .theme-selector{ background-color:[bg_secondary]; border:1px solid [border_color]; overflow:hidden; max-width:640px; min-width:28px; white-space:nowrap; transition:max-width 150ms ease-out; }\n\
-	.csetup-root .theme-body{ display:inline-flex; align-items:center; gap:6px; transition:none; opacity:1; transform:none; }\n\
-	.csetup-root .theme-selector.collapsed{ max-width:28px; padding:0; gap:0; }\n\
-	.csetup-root .theme-selector.collapsed a.theme-emoji-btn{ margin:0 !important; width:26px; height:26px; display:flex; align-items:center; justify-content:center; text-align:center; font-size:16px; line-height:26px; }\n\
-	.csetup-root .theme-selector.collapsed .theme-body{ opacity:0; transform:translateX(16px); pointer-events:none; }\n\
-	.csetup-root a.theme-emoji-btn{ padding:0 !important; margin:0 4px 0 0 !important; background:transparent !important; border:none !important; box-shadow:none !important; display:inline-flex; align-items:center; justify-content:center; font-size:14px; line-height:1; }\n\
-	.csetup-root a.theme-collapse-hint{ padding:0 !important; margin:0 2px 0 0 !important; background:transparent !important; border:none !important; box-shadow:none !important; font-size:12px; line-height:1; opacity:0.85; text-decoration:none; }\n\
-	.csetup-root a.theme-collapse-hint:hover{ opacity:1; }\n\
-	.csetup-root .theme-label{ font-size:11px; letter-spacing:0.2px; opacity:0.92; color:[text_secondary]; user-select:none; }\n\
-	.csetup-root .theme-label-custom{ opacity:0.95; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; color:[text_primary]; }\n\
-	.csetup-root .theme-sep{ width:2px; height:20px; background:[border_color]; opacity:1; margin:0 6px; display:inline-block; border-radius:2px; }\n\
-	.csetup-root .theme-custom-group{ display:inline-flex; align-items:center; gap:6px; padding:3px 6px; border-radius:10px; background-color:[bg_primary]; border:1px solid [border_color]; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06); }\n\
-	.csetup-root a.theme-swatch.active{ border-color:[accent_color]; box-shadow:none; outline:2px solid [accent_color]; outline-offset:1px; }\n\
-	.csetup-root a.theme-swatch--custom{ width:18px; height:18px; border-radius:[button_radius]; display:inline-flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; color:#fff; text-shadow:0 1px 2px rgba(0,0,0,0.75); }\n\
-	.csetup-root a.theme-gear{ padding:0 !important; margin-left:2px; width:18px; height:18px; border-radius:[button_radius]; display:inline-flex; align-items:center; justify-content:center; font-size:13px; line-height:1; }\n\
-	.csetup-root .theme-custom-editor{ background-color:[bg_secondary]; border:1px solid [border_color]; color:[text_primary]; }\n\
-	.csetup-root .theme-custom-editor-hint{ font-size:11px; opacity:0.8; color:[text_secondary]; }\n\
-	.csetup-root .theme-custom-editor-table a.colorbox{ padding:0 !important; margin:0 6px 0 0 !important; background-color:transparent; border-radius:4px !important; box-shadow:none !important; }\n\
-	.csetup-root .theme-custom-editor-actions a.theme-action{ background-color:#2b2b2b !important; color:#f2f2f2 !important; border:1px solid rgba(255,255,255,0.18) !important; }\n\
-	.csetup-root .theme-custom-editor-actions a.theme-action:hover{ background-color:#3a3a3a !important; }\n\
-	.csetup-root .theme-custom-editor-actions a.theme-action-reset{ background-color:#7a1f1f !important; border-color:rgba(255, 107, 107, 0.85) !important; }\n\
-	.csetup-root .theme-custom-editor-actions a.theme-action-reset:hover{ background-color:#9a2626 !important; }\n\
+	.csetup-root{[custom_vars]background-color:[bg_primary];color:[text_primary];background-image:[bg_pattern]}\n\
+	.csetup-root a,.csetup-root a:link,.csetup-root a:visited{color:[text_primary];background-color:[button_bg];border-color:[border_color];border-radius:[button_radius]}\n\
+	.csetup-root a:hover{background-color:[button_hover]}\n\
+	.csetup-root .linkOn{background-color:[button_active];color:[button_text]}\n\
+	.csetup-root a.linkOff,.csetup-root .linkOff{color:[text_secondary]}\n\
+	.csetup-root hr{background-color:[border_color]}\n\
+	.csetup-root table{background-color:[bg_secondary];border-color:[border_color]}\n\
+	.csetup-root td,.csetup-root th{color:[text_primary];border-color:[border_color]}\n\
+	.csetup-root .csetup_character_node{background-color:[bg_secondary];border-color:[border_color]}\n\
+	.csetup-root .csetup_character_label{color:[text_secondary]}\n\
+	.csetup-root .csetup-ai-core-preview img{border-color:[border_color];background-color:[bg_primary]}\n\
+	.csetup-root .theme-selector{background-color:[bg_secondary];border-color:[border_color]}\n\
+	.csetup-root .theme-label{color:[text_secondary]}\n\
+	.csetup-root .theme-label-custom{color:[text_primary]}\n\
+	.csetup-root .theme-sep{background:[border_color]}\n\
+	.csetup-root .theme-custom-group{background-color:[bg_primary];border-color:[border_color]}\n\
+	.csetup-root a.theme-swatch.active{border-color:[accent_color];outline:2px solid [accent_color];outline-offset:1px}\n\
+	.csetup-root a.theme-swatch--custom{border-radius:[button_radius]}\n\
+	.csetup-root a.theme-gear{border-radius:[button_radius]}\n\
+	.csetup-root .theme-custom-editor{background-color:[bg_secondary];border-color:[border_color];color:[text_primary]}\n\
+	.csetup-root .theme-custom-editor-hint{color:[text_secondary]}\n\
 </style>"
-
-			// Enhanced decoration level CSS (gradients, shadows, animations)
-			var/enhanced_decoration_css = ""
-			if(ui_decoration_level == "enhanced")
-				enhanced_decoration_css = "<style>\n\
-	/* Enhanced UI Decoration: Gradients, Shadows, Animations */\n\
-	.csetup-root{ background-image: radial-gradient(circle at 92% 0%, rgba(var(--csetup-accent-rgb, 77, 163, 255), 0.16), transparent 48%), radial-gradient(circle at 0% 100%, rgba(var(--csetup-accent-rgb, 77, 163, 255), 0.10), transparent 55%) !important; }\n\
-	.csetup-root.csetup-scheme-purple{ background-image: radial-gradient(circle at 92% 0%, rgba(var(--csetup-accent-rgb, 193, 155, 255), 0.20), transparent 50%), radial-gradient(circle at 0% 100%, rgba(var(--csetup-accent-rgb, 193, 155, 255), 0.12), transparent 56%) !important; }\n\
-	.csetup-root.csetup-scheme-green{ background-image: radial-gradient(circle at 92% 0%, rgba(var(--csetup-accent-rgb, 139, 255, 177), 0.18), transparent 52%), radial-gradient(circle at 0% 100%, rgba(var(--csetup-accent-rgb, 139, 255, 177), 0.10), transparent 58%) !important; }\n\
-	.csetup-root.csetup-scheme-neutral{ background-image: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.32) 0px, rgba(255, 255, 255, 0.32) 10px, rgba(0, 0, 0, 0.035) 10px, rgba(0, 0, 0, 0.035) 20px) !important; }\n\
-	.csetup-root hr{ background: linear-gradient(90deg, transparent, var(--csetup-border), transparent) !important; }\n\
-	.csetup-root a, .csetup-root a:link, .csetup-root a:visited{ transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease !important; }\n\
-	.csetup-root a:hover{ transform: translateY(-1px); }\n\
-	.csetup-root a.csetup-dice-btn:hover{ transform: translateY(-1px); }\n\
-	.csetup-root .csetup-character-card{ background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(0, 0, 0, 0.0)), var(--csetup-panel) !important; }\n\
-	.csetup-root .csetup-character-card-header{ background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(0, 0, 0, 0)) !important; }\n\
-	.csetup-root .csetup-quirk-indicator-positive{ box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18) !important; }\n\
-	.csetup-root .csetup-danger-zone{ background: linear-gradient(90deg, rgba(255, 107, 107, 0.14), rgba(0, 0, 0, 0)) !important; }\n\
-	.csetup-root a.linkOn:active{ box-shadow: 0 0 10px rgba(47, 148, 60, 0.35) !important; }\n\
-	.csetup-root.csetup-theme-classic a.linkOn:active{ box-shadow: 0 0 10px rgba(var(--csetup-accent-rgb, 77, 163, 255), 0.25) !important; }\n\
-	.csetup-root .csetup-notice{ box-shadow: var(--csetup-shadow) !important; }\n\
-	.csetup-root .csetup-tooltip{ box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45) !important; }\n\
-	.csetup-root .csetup-hovertip{ box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45) !important; }\n\
-	.csetup-root .csetup-mini-tooltip{ box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06), 0 8px 20px rgba(0, 0, 0, 0.35) !important; }\n\
-	.csetup-root .theme-selector{ box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important; transition: max-width 180ms ease, padding 180ms ease !important; }\n\
-	.csetup-root .theme-body{ transition: opacity 160ms ease, transform 180ms ease !important; }\n\
-	.csetup-root .theme-selector.anim.collapsed{ animation: csetupThemePickerCollapseWidth 180ms ease both !important; }\n\
-	.csetup-root .theme-selector.anim:not(.collapsed){ animation: csetupThemePickerExpandWidth 180ms ease both !important; }\n\
-	.csetup-root .theme-selector.anim.collapsed .theme-body{ animation: csetupThemePickerFadeOut 180ms ease both !important; }\n\
-	.csetup-root .theme-selector.anim:not(.collapsed) .theme-body{ animation: csetupThemePickerFadeIn 180ms ease both !important; }\n\
-	.csetup-root a.theme-swatch:hover{ transform: translateY(-1px) scale(1.05); }\n\
-	.csetup-root a.theme-swatch.active{ box-shadow: 0 0 8px rgba(var(--csetup-accent-rgb, 77, 163, 255), 0.55) !important; }\n\
-	.csetup-root .theme-custom-editor{ box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35) !important; }\n\
-	.csetup-root .theme-custom-editor-table a.colorbox:hover{ transform: translateY(-1px); box-shadow: 0 0 6px rgba(var(--csetup-accent-rgb, 77, 163, 255), 0.35) !important; }\n\
-	.csetup-root .theme-settings-panel{ box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35) !important; }\n\
-	.csetup-root .theme-settings-pill::before{ box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12) !important; }\n\
-	.csetup-root .csetup-quirk-row{ box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06), 0 2px 10px rgba(0, 0, 0, 0.25) !important; transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease !important; }\n\
-	.csetup-root .csetup-quirk-row:hover{ transform: translateY(-1px); box-shadow: 0 0 0 1px rgba(var(--csetup-accent-rgb), 0.10), 0 10px 22px rgba(0, 0, 0, 0.35) !important; }\n\
-	.csetup-root .csetup-quirk-row.is-selected{ box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 0 0 2px rgba(var(--csetup-accent-rgb), 0.12), 0 6px 18px rgba(0, 0, 0, 0.35) !important; }\n\
-	.csetup-root .csetup-quirk-row.is-negative::before{ background: linear-gradient(180deg, #ff8d8d, #ff3b3b) !important; box-shadow: 0 0 10px rgba(255, 59, 59, 0.35) !important; }\n\
-	.csetup-root .csetup-quirk-row.is-positive::before{ background: linear-gradient(180deg, #8bf7b5, #3bd76b) !important; box-shadow: 0 0 10px rgba(59, 215, 107, 0.45) !important; }\n\
-</style>"
-			modern_palette_css += enhanced_decoration_css
 		var/theme_class = "csetup-theme-classic"
 		switch(charcreation_theme)
 			if("classic")
@@ -812,7 +763,10 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		var/button_shape_class = ""
 		if(is_modern_theme)
 			button_shape_class = "csetup-btnshape-[modern_button_shape]"
-		dat = list(modern_palette_css, "<div class='csetup-root [theme_class][button_shape_class ? " [button_shape_class]" : ""]'>")
+		var/decoration_class = ""
+		if(is_modern_theme && ui_decoration_level == "enhanced")
+			decoration_class = "csetup-decoration-enhanced"
+		dat = list(modern_palette_css, "<div class='csetup-root [theme_class][button_shape_class ? " [button_shape_class]" : ""][decoration_class ? " [decoration_class]" : ""]'>")
 
 		// Compact theme picker (top-right): only for Modern UI themes.
 		if(is_modern_theme)
@@ -833,44 +787,35 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				"modern_neutral" = "#bfc2c7"
 			)
 
-			var/theme_selector_class = "theme-selector"
-			if(modern_theme_picker_animate)
-				theme_selector_class += " anim"
-			if(modern_theme_picker_collapsed)
-				theme_selector_class += " collapsed"
-			var/toggle_title = modern_theme_picker_collapsed ? "Развернуть меню тем" : "Свернуть меню тем"
-			dat += "<div class='[theme_selector_class]'>"
-			dat += "<span class='theme-icon-stack'>"
-			dat += "<a href='?_src_=prefs;preference=modern_theme_picker;action=toggle' class='theme-emoji-btn' title='[toggle_title]'>🎨</a>"
-			dat += "<a href='?_src_=prefs;preference=modern_theme_settings;action=toggle' class='theme-emoji-btn theme-settings-btn' title='Настройки (WIP)'>⚙</a>"
-			dat += "</span>"
-			dat += "<span class='theme-body'>"
-			// UI tweak start
-			//if(!modern_theme_picker_collapsed)
-			//	dat += "<a href='?_src_=prefs;preference=modern_theme_picker;action=toggle' class='theme-collapse-hint' title='Свернуть' aria-label='Свернуть меню тем'>◀</a>"
-			// UI tweak end
-			dat += "<span class='theme-label'>Themes</span>"
-			for(var/theme_id in theme_order)
-				var/is_active = (charcreation_theme == theme_id)
-				var/swatch_class = is_active ? "theme-swatch active" : "theme-swatch"
-				var/swatch_color = theme_swatches[theme_id]
-				var/swatch_title = theme_titles[theme_id]
-				dat += "<a href='?_src_=prefs;preference=charcreation_set;theme=[theme_id]' class='[swatch_class]' style='background-color: [swatch_color];' title='[swatch_title]'></a>"
-			// Separate Custom + gear from the preset themes with a strong divider + label.
-			var/custom_active = (charcreation_theme == "modern_custom")
-			var/custom_class = custom_active ? "theme-swatch theme-swatch--custom active" : "theme-swatch theme-swatch--custom"
-			// Show the custom theme background in the swatch (more representative than accent).
-			var/custom_swatch_color = "#[modern_custom_bg_primary]"
-			var/custom_title = modern_custom_enabled ? "Custom" : "Custom (Off)"
-			dat += "<span class='theme-sep' aria-hidden='true'></span>"
-			dat += "<span class='theme-custom-group'>"
-			dat += "<span class='theme-label theme-label-custom'>Custom</span>"
-			dat += "<a href='?_src_=prefs;preference=charcreation_set;theme=modern_custom' class='[custom_class]' style='background-color: [custom_swatch_color];' title='[custom_title]'></a>"
-			dat += "<a href='?_src_=prefs;preference=modern_theme_editor;action=toggle' class='theme-gear' title='Custom theme settings (opens editor)'>⚙</a>"
-			dat += "</span>"
-			dat += "</span>" // theme-body
+			// Theme hub — icon buttons that never move
+			dat += "<div class='theme-container'>"
+			dat += "<div class='theme-hub'>"
+			var/picker_active_cls = !modern_theme_picker_collapsed ? " active" : ""
+			var/settings_active_cls = modern_theme_settings_open ? " active" : ""
+			dat += "<a href='?_src_=prefs;preference=modern_theme_picker;action=toggle' class='theme-hub-btn[picker_active_cls]' title='Темы'>🎨</a>"
+			dat += "<a href='?_src_=prefs;preference=modern_theme_settings;action=toggle' class='theme-hub-btn[settings_active_cls]' title='Настройки'>⚙</a>"
 			dat += "</div>"
-			modern_theme_picker_animate = FALSE
+			// Theme picker panel
+			if(!modern_theme_picker_collapsed)
+				dat += "<div class='theme-picker-panel'>"
+				dat += "<span class='theme-label'>Themes</span>"
+				for(var/theme_id in theme_order)
+					var/is_active = (charcreation_theme == theme_id)
+					var/swatch_class = is_active ? "theme-swatch active" : "theme-swatch"
+					var/swatch_color = theme_swatches[theme_id]
+					var/swatch_title = theme_titles[theme_id]
+					dat += "<a href='?_src_=prefs;preference=charcreation_set;theme=[theme_id]' class='[swatch_class]' style='background-color: [swatch_color];' title='[swatch_title]'></a>"
+				var/custom_active = (charcreation_theme == "modern_custom")
+				var/custom_class = custom_active ? "theme-swatch theme-swatch--custom active" : "theme-swatch theme-swatch--custom"
+				var/custom_swatch_color = "#[modern_custom_bg_primary]"
+				var/custom_title = modern_custom_enabled ? "Custom" : "Custom (Off)"
+				dat += "<span class='theme-sep' aria-hidden='true'></span>"
+				dat += "<span class='theme-custom-group'>"
+				dat += "<span class='theme-label theme-label-custom'>Custom</span>"
+				dat += "<a href='?_src_=prefs;preference=charcreation_set;theme=modern_custom' class='[custom_class]' style='background-color: [custom_swatch_color];' title='[custom_title]'></a>"
+				dat += "<a href='?_src_=prefs;preference=modern_theme_editor;action=toggle' class='theme-gear' title='Custom theme settings (opens editor)'>⚙</a>"
+				dat += "</span>"
+				dat += "</div>"
 
 			if(modern_theme_settings_open)
 				dat += "<div class='theme-settings-panel'>"
@@ -948,6 +893,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					dat += "<tr><td class='k'>[label]</td><td class='v'><a class='colorbox' href='?_src_=prefs;preference=modern_custom_color;key=[key]' style='background-color: #[value_hex];' title='Pick color (opens BYOND color picker)'></a> #[value_hex]</td></tr>"
 				dat += "</table>"
 				dat += "</div>"
+			dat += "</div>" // theme-container
 
 		dat += "<center>"
 	else
@@ -1010,6 +956,9 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 							slot_class = "class='linkOn'"
 						dat += "<a style='white-space:nowrap;' href='?_src_=prefs;preference=changeslot;num=[i];' [slot_class]>[name]</a> "
 					dat += "</center>"
+					// Кнопка удаления текущего слота
+					var/delete_slot_label = src.use_modern_translations ? get_modern_text("delete_slot_label", src) : "Delete current slot"
+					dat += "<center><a href='?_src_=prefs;preference=character_slots;action=delete_slot;slot=[default_slot]' style='white-space:nowrap;background:#eb2e2e;font-size:0.85em;'>[delete_slot_label]</a></center>"
 
 				dat += "<center>"
 				var/local_storage_label = src.use_modern_translations ? get_modern_text("local_storage", src) : "Local storage"
@@ -1173,6 +1122,12 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					chosen_gear = list()
 				dat += "<td width='65%'>"
 				dat += "<center><b><font color='" + (gear_points == 0 ? "#E62100" : "#CCDDFF") + "'>[gear_points]</font> [loadout_points_word] [loadout_points_remaining_label]</b></center><br>"
+				// BLUEMOON ADD - переключатель "спавниться с лодаутом"
+				var/loadout_enabled_label = src.use_modern_translations ? get_modern_text("loadout_enabled_label", src) : "Replace clothing with loadout"
+				var/loadout_toggle_color = loadout_enabled ? "#6ABF6A" : "#E62100"
+				var/loadout_toggle_text = loadout_enabled ? (src.use_modern_translations ? get_modern_text("enabled", src) : "ON") : (src.use_modern_translations ? get_modern_text("disabled", src) : "OFF")
+				dat += "<center>[loadout_enabled_label]: <a href='?_src_=prefs;preference=gear;toggle_loadout_enabled=1'><font color='[loadout_toggle_color]'><b>[loadout_toggle_text]</b></font></a></center><br>"
+				// BLUEMOON ADD END
 				dat += "<center><a href='?_src_=prefs;preference=gear;clear_loadout=1'>[clear_loadout_label]</a></center>"
 				dat += "</td>"
 			else
@@ -3492,6 +3447,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			var/row_html = "<div class='[row_classes]' title='[safe_lock_reason]'>"
 			row_html += "<div class='csetup-quirk-head'>[title_html][cost_html]</div>"
 			row_html += "<div class='csetup-quirk-desc'>[initial(T.desc)]</div>"
+			row_html += "<div class='csetup-quirk-lock-reason'>&#128274; [safe_lock_reason]</div>"
 			row_html += "</div>"
 			other_rows += row_html
 			continue
@@ -3717,6 +3673,37 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			if("toggle_empty")
 				collapse_empty_character_slots = !collapse_empty_character_slots
 				save_preferences(silent = TRUE)
+				ShowChoices(user)
+				return TRUE
+			if("delete_slot")
+				var/slot = text2num(href_list["slot"])
+				if(!slot)
+					ShowChoices(user)
+					return TRUE
+				// Подсчитываем количество непустых слотов
+				var/occupied_count = 0
+				if(path)
+					var/savefile/S = new /savefile(path)
+					if(S)
+						for(var/i in 1 to max_save_slots)
+							S.cd = "/character[i]"
+							var/check_name
+							S["real_name"] >> check_name
+							if(check_name)
+								occupied_count++
+				if(occupied_count <= 1)
+					tgui_alert_async(user, "Нельзя удалить единственного персонажа! / Cannot delete the only character!")
+					ShowChoices(user)
+					return TRUE
+				// Запрашиваем подтверждение
+				var/confirm = tgui_alert(user, "Вы уверены, что хотите удалить этого персонажа? Это действие необратимо! / Are you sure you want to delete this character? This cannot be undone!", "Delete Character", list("Yes", "No"))
+				if(confirm != "Yes")
+					ShowChoices(user)
+					return TRUE
+				if(delete_character(slot))
+					tgui_alert_async(user, "Персонаж удалён. / Character deleted.")
+				else
+					tgui_alert_async(user, "Не удалось удалить персонажа. / Failed to delete character.")
 				ShowChoices(user)
 				return TRUE
 		ShowChoices(user)
@@ -6266,6 +6253,11 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		if(href_list["clear_loadout"])
 			loadout_data["SAVE_[loadout_slot]"] = list()
 			save_preferences()
+		// BLUEMOON ADD - переключатель лодаута
+		if(href_list["toggle_loadout_enabled"])
+			loadout_enabled = !loadout_enabled
+			save_preferences()
+		// BLUEMOON ADD END
 		if(href_list["select_category"])
 			gear_category = url_decode(href_list["select_category"])
 			// BLUEMOON FIX - Add null check to prevent runtime when category doesn't exist
