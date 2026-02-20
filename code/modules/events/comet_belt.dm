@@ -2,8 +2,8 @@
 /datum/round_event_control/comet_belt
 	name = "Comet Belt"
 	typepath = /datum/round_event/comet_belt
-	max_occurrences = 2
-	weight = 2
+	max_occurrences = 1
+	weight = 5
 	earliest_start = 10 MINUTES
 	category = EVENT_CATEGORY_FRIENDLY
 	description = "A belt of comets passes near the station, creating a spectacular light show."
@@ -176,8 +176,7 @@
 /datum/round_event/comet_belt/end()
 	for(var/V in GLOB.player_list)
 		var/mob/M = V
-		if(is_station_level(M.z))
-			REMOVE_TRAIT(M, TRAIT_PACIFISM, "comet_belt")
+		REMOVE_TRAIT(M, TRAIT_PACIFISM, "comet_belt")
 	for(var/client/C in saved_ambience_clients)
 		if(!C?.mob)
 			continue
