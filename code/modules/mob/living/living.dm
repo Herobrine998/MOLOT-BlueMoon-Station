@@ -678,6 +678,10 @@
 				var/obj/effect/proc_holder/spell/spell = S
 				spell.UpdateButton()
 
+		// Play a local revive sound for the revived mob with a small chance
+		if(prob(10))
+			playsound_local(src, 'modular_bluemoon/sound/effects/re-zero.ogg', 35)
+
 //proc used to remove all immobilisation effects + reset stamina
 /mob/living/proc/remove_CC(should_update_mobility = TRUE)
 	SetAllImmobility(0, FALSE)
