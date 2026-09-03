@@ -311,7 +311,7 @@ GLOBAL_LIST_INIT(custom_interaction_sounds, list(
 		else
 			return TRUE
 
-/datum/interaction/custom/proc/check_requirements(mob/living/user, mob/living/target, silent = TRUE)
+/datum/interaction/custom/proc/check_requirements(mob/living/user, mob/living/target, silent = TRUE, apply_cooldown = TRUE)
 	if(requires_tail && !(user.has_tail() || (target && target.has_tail())))
 		if(!silent)
 			to_chat(user, span_warning("Требования для этого действия не выполнены: нужен хвост у кого-то из вас."))
@@ -380,6 +380,10 @@ GLOBAL_LIST_INIT(custom_interaction_sounds, list(
 				if(!silent)
 					to_chat(user, span_warning("[target] не даёт согласие на сексуальное насилие."))
 				return FALSE
+
+	if(apply_cooldown && !COOLDOWN_FINISHED(user, last_interaction_time))
+		return FALSE
+
 	return TRUE
 
 /datum/interaction/custom/proc/get_message_style()
@@ -399,7 +403,7 @@ GLOBAL_LIST_INIT(custom_interaction_sounds, list(
 /datum/interaction/custom/do_action(mob/living/user, mob/living/target, apply_cooldown = TRUE, is_hidden = FALSE)
 	if(QDELETED(user) || QDELETED(target) || !name || !message)
 		return FALSE
-	if(!check_requirements(user, target, silent = FALSE))
+	if(!check_requirements(user, target, silent = FALSE, apply_cooldown = apply_cooldown))
 		return FALSE
 	if(get_dist(user, target) > max_distance)
 		to_chat(user, span_warning("Слишком далеко."))
