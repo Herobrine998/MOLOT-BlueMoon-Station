@@ -551,6 +551,12 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	path = "data/player_saves/[ckey[1]]/[ckey]/[filename]"
 	vr_path = "data/player_saves/[ckey[1]]/[ckey]/vore"
 
+// Модульные корневые префы читаются до миграции и её полного сохранения.
+// Расширяйте этот прок через ..(), а не load_preferences(), чтобы не затереть
+// ещё не прочитанные поля значениями по умолчанию при повышении версии сейва.
+/datum/preferences/proc/load_preferences_extra(savefile/S)
+	return S
+
 /datum/preferences/proc/load_preferences(bypass_cooldown = FALSE)
 	if(!path)
 		return FALSE
@@ -746,6 +752,9 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		if(ispath(path)) //whatever typepath fails this check probably doesn't exist anymore
 			parsed_favs += path
 	favorite_outfits = uniqueList(parsed_favs)
+
+	if(!istype(load_preferences_extra(S), /savefile))
+		return FALSE
 
 	//try to fix any outdated data if necessary
 	if(needs_update >= 0)

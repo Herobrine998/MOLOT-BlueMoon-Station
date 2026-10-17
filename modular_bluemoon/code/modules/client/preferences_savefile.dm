@@ -53,7 +53,7 @@
 	var/list/playlists = list()
 	var/list/favorite_paintings_md5 = list()
 
-// save_preferences / load_preferences для metadollar_minute_pool и пр. — в modular_sand (последний в цепочке),
+// save_preferences / load_preferences_extra для metadollar_minute_pool и пр. — в modular_sand (последний в цепочке),
 // иначе lobby_preferences.dm перезаписывает этот proc и поля не сохранялись на диск.
 
 /datum/preferences/update_preferences(current_version, savefile/S)
