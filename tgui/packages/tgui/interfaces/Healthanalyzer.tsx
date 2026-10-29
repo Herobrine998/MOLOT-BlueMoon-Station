@@ -11,7 +11,7 @@ import { Window } from '../layouts';
 type ScanLine = { text: string; warning: BooleanLike };
 type ScanSection = { title: string; lines: ScanLine[] };
 type Wound = { name: string; icon: string; severity: string; treatment: string; details: string };
-type Limb = { name: string; missing: BooleanLike; missingIcon?: string; brute: number; burn: number; wounds: Wound[]; embeds: string[] };
+type Limb = { name: string; missing: BooleanLike; missingIcon?: string; missingText?: string; brute: number; burn: number; wounds: Wound[]; embeds: string[] };
 type Organ = { name: string; icon: string; damage: number | null; status: string; warning: BooleanLike; critical: BooleanLike };
 type Reagent = { name: string; volume: number; overdosed: BooleanLike; inactive: BooleanLike };
 type Quirk = { name: string; value: number };
@@ -327,7 +327,7 @@ const LimbTable = ({ scan }: { scan: Scan }) => {
           {limb.missing ? (
             <Box bold color="bad">
               {!!limb.missingIcon && <Icon name={limb.missingIcon} mr={0.5} />}
-              {limb.name} отсутствует
+              {limb.name} {limb.missingText || 'отсутствует'}
             </Box>
           ) : (
             <Box className="Healthanalyzer__limbRow">

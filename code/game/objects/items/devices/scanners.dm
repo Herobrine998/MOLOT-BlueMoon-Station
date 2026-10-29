@@ -475,9 +475,13 @@ GENETICS SCANNER
 	var/limb_details = ""
 	if(iscarbon(M))
 		var/mob/living/carbon/C = M
+		var/naga_anatomy = HAS_TRAIT(C, TRAIT_NAGA_ANATOMY)
 		for(var/zone in list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG))
+			if(naga_anatomy && zone == BODY_ZONE_R_LEG)
+				continue
 			var/obj/item/bodypart/limb = C.get_bodypart(zone)
-			var/list/entry = list("name" = capitalize(ru_parse_zone(zone)), "missing" = isnull(limb), "wounds" = list(), "embeds" = list())
+			var/is_tail = naga_anatomy && zone == BODY_ZONE_L_LEG
+			var/list/entry = list("name" = is_tail ? "Опорный хвост" : capitalize(ru_parse_zone(zone)), "missing" = isnull(limb), "wounds" = list(), "embeds" = list())
 			var/list/wounds = entry["wounds"]
 			var/list/embeds = entry["embeds"]
 			if(limb)
@@ -491,13 +495,14 @@ GENETICS SCANNER
 				continue
 			limbs += list(entry)
 			if(!limb)
+				entry["missingText"] = is_tail ? "оторван" : "отсутствует"
 				switch(zone)
 					if(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM)
 						entry["missingIcon"] = "handshake-slash"
 					if(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 						entry["missingIcon"] = "crutch"
 				var/missing_icon = entry["missingIcon"] ? "<i class='fas fa-[entry["missingIcon"]]'></i> " : ""
-				limb_details += "<tr><td colspan='5'>[span_bolddanger("[missing_icon][html_encode(entry["name"])] отсутствует")]</td></tr>"
+				limb_details += "<tr><td colspan='5'>[span_bolddanger("[missing_icon][html_encode(entry["name"])] [entry["missingText"]]")]</td></tr>"
 			else
 				limb_details += "<tr><td>[html_encode(entry["name"])]</td><td>[span_danger("[entry["brute"]]")]</td><td>[span_orange("[entry["burn"]]")]</td></tr>"
 			for(var/embedded_name in embeds)

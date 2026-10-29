@@ -578,6 +578,9 @@
 			to_send += "<span class='notice'><center><b>Вы осматриваете себя</b></span></center><hr>"
 
 			var/list/missing = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
+			var/naga_anatomy = HAS_TRAIT(src, TRAIT_NAGA_ANATOMY)
+			if(naga_anatomy)
+				missing -= BODY_ZONE_R_LEG
 			for(var/X in bodyparts)
 				var/obj/item/bodypart/LB = X
 				missing -= LB.body_zone
@@ -648,7 +651,10 @@
 					to_send += "\n\t<a href='?src=[REF(src)];remove_gauze=1;gauze_limb=[REF(LB)]' class='notice'>На вашей [LB.ru_name_v] наложен \a [LB.current_gauze].</a>"
 
 			for(var/t in missing)
-				to_send += "<span class='boldannounce'>Ваша [ru_parse_zone(t)] отсутствует!</span>\n"
+				if(naga_anatomy && t == BODY_ZONE_L_LEG)
+					to_send += span_boldannounce("Ваш опорный хвост оторван!") + "\n"
+				else
+					to_send += span_boldannounce("Ваша [ru_parse_zone(t)] отсутствует!") + "\n"
 
 			if(is_bleeding())
 				var/list/obj/item/bodypart/bleeding_limbs = list()
@@ -844,6 +850,9 @@
 	var/output = "<span class='notice'>Вы осматриваете себя на предмет повреждений.</span><hr>"
 
 	var/list/missing = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
+	var/naga_anatomy = HAS_TRAIT(src, TRAIT_NAGA_ANATOMY)
+	if(naga_anatomy)
+		missing -= BODY_ZONE_R_LEG
 
 	for(var/X in bodyparts)
 		var/obj/item/bodypart/LB = X
@@ -921,6 +930,11 @@
 
 		if(LB.current_gauze)
 			output += "\n\t <a href='?src=[REF(src)];remove_gauze=1;gauze_limb=[REF(LB)]' class='notice'>На вашей [LB.ru_name_v] наложен \a [LB.current_gauze].</a>"
+	for(var/zone in missing)
+		if(naga_anatomy && zone == BODY_ZONE_L_LEG)
+			output += "\n" + span_boldannounce("Ваш опорный хвост оторван!")
+		else
+			output += "\n" + span_boldannounce("Ваша [ru_parse_zone(zone)] отсутствует!")
 	to_chat(src, examine_block(output))
 
 /mob/living/carbon/human/damage_clothes(damage_amount, damage_type = BRUTE, damage_flag = 0, def_zone)

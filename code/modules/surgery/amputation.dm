@@ -8,6 +8,11 @@
 	icon_state = "saw"
 	radial_priority = SURGERY_RADIAL_PRIORITY_HEAL_ADDITIONAL
 
+/datum/surgery/amputation/can_start(mob/user, mob/living/carbon/target, obj/item/tool)
+	if(istype(target.get_bodypart(user.zone_selected), /obj/item/bodypart/l_leg/naga_tail))
+		return FALSE
+	return ..()
+
 /datum/surgery_step/sever_limb
 	name = "Отделить Конечность"
 	implements = list(TOOL_SCALPEL = 100, TOOL_SAW = 100, /obj/item/melee/transforming/energy/sword/cyborg/saw = 100, /obj/item/melee/arm_blade = 80, /obj/item/chainsaw = 80, /obj/item/mounted_chainsaw = 80, /obj/item/fireaxe = 50, /obj/item/hatchet = 40, /obj/item/kitchen/knife/butcher = 25)

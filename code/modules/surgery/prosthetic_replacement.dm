@@ -12,6 +12,8 @@
 	if(!iscarbon(target))
 		return FALSE
 	var/mob/living/carbon/C = target
+	if(HAS_TRAIT(C, TRAIT_NAGA_ANATOMY) && (user.zone_selected == BODY_ZONE_L_LEG || user.zone_selected == BODY_ZONE_R_LEG))
+		return FALSE
 	if(!C.get_bodypart(user.zone_selected)) //can only start if limb is missing
 		return TRUE
 /datum/surgery_step/add_prosthetic

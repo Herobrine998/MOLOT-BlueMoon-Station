@@ -361,6 +361,8 @@
 
 	if(initial(disabling))
 		disabling = !limb.current_gauze
+	if(istype(limb, /obj/item/bodypart/l_leg/naga_tail))
+		disabling = FALSE
 
 	limb.update_wounds()
 

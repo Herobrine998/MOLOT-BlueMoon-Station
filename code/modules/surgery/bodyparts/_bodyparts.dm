@@ -162,6 +162,9 @@
 	if(ishuman(C))
 		var/mob/living/carbon/human/H = C
 		if(HAS_TRAIT(C, TRAIT_LIMBATTACHMENT))
+			if((body_zone == BODY_ZONE_L_LEG || body_zone == BODY_ZONE_R_LEG) && (HAS_TRAIT(C, TRAIT_NAGA_ANATOMY) != istype(src, /obj/item/bodypart/l_leg/naga_tail)))
+				to_chat(user, span_warning("Эта конечность не подходит анатомии [H]."))
+				return
 			if(!H.get_bodypart(body_zone) && !animal_origin)
 				if(H == user)
 					H.visible_message("<span class='warning'>[H] jams [src] into [H.ru_ego()] empty socket!</span>",\

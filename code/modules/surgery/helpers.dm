@@ -1,8 +1,15 @@
 #define SURGERY_VOLUNTARY_SLEEP_DURATION (6 SECONDS)
 
+// Две зоны ног ламии обозначают один хирургический доступ к опорному хвосту.
+/proc/get_surgery_zone(mob/living/patient, zone)
+	if(zone == BODY_ZONE_R_LEG && iscarbon(patient) && HAS_TRAIT(patient, TRAIT_NAGA_ANATOMY))
+		return BODY_ZONE_L_LEG
+	return zone
+
 /// Операции, которые можно начать этим инструментом на выбранной зоне пациента: имя -> операция.
 /proc/get_available_surgeries(obj/item/tool, mob/living/patient, mob/user, selected_zone)
 	. = list()
+	selected_zone = get_surgery_zone(patient, selected_zone)
 	var/obj/item/bodypart/affecting
 	if(iscarbon(patient))
 		var/mob/living/carbon/carbon_patient = patient
@@ -44,7 +51,7 @@
 
 	var/mob/living/carbon/C
 	var/obj/item/bodypart/affecting
-	var/selected_zone = user.zone_selected
+	var/selected_zone = get_surgery_zone(M, user.zone_selected)
 
 	if(iscarbon(M))
 		C = M
@@ -125,10 +132,13 @@
 
 		if(user && user.Adjacent(M) && (I in user))
 			var/datum/surgery/S = available_surgeries[P]
+			if(C)
+				affecting = C.get_bodypart(check_zone(selected_zone))
 
 			for(var/datum/surgery/other in M.surgeries)
-				if(other.location == S.location)
-					return //during the input() another surgery was started at the same location.
+				if(other.location == selected_zone || (istype(affecting, /obj/item/bodypart/l_leg/naga_tail) && other.operated_bodypart == affecting))
+					// За время выбора могла начаться другая операция на том же доступе или хвосте.
+					return
 
 			//we check that the surgery is still doable after the input() wait.
 			if(C)
