@@ -37,8 +37,8 @@
 
 // Доступ к хвосту находится в паху, а этапы совпадают с ампутацией конечности.
 /datum/surgery/naga_tail_removal
-	name = "Naga tail removal"
-	desc = "Отделение опорного хвоста наги через доступ в области паха. После удаления пациент не сможет ходить."
+	name = "Supporting tail removal"
+	desc = "Отделение опорного хвоста через доступ в области паха. После удаления пациент не сможет ходить."
 	icon_state = "saw"
 	steps = list(/datum/surgery_step/incise, /datum/surgery_step/clamp_bleeders, /datum/surgery_step/retract_skin, /datum/surgery_step/saw, /datum/surgery_step/clamp_bleeders, /datum/surgery_step/sever_naga_tail)
 	possible_locs = list(BODY_ZONE_PRECISE_GROIN)
@@ -67,5 +67,5 @@
 	display_results(user, target, span_notice("Вы отделили опорный хвост [target]."),
 		"[user] отделяет опорный хвост [target]!",
 		"[user] отделяет опорный хвост [target]!")
-	log_combat(user, target, "surgically removed naga tail")
+	log_combat(user, target, "surgically removed supporting tail")
 	return TRUE

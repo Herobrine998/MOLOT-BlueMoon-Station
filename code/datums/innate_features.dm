@@ -23,13 +23,14 @@ GLOBAL_LIST_INIT(innate_features, init_innate_features())
 	var/list/incompatible_quirks
 	var/list/incompatible_features
 	var/medical_tooltip
+	var/required_taur_display_name
 
 /datum/innate_feature/proc/requirements(datum/preferences/prefs)
 	var/list/result = list()
 	if(required_taur_type)
 		var/datum/sprite_accessory/taur/taur = GLOB.taur_list[prefs.features["taur"]]
 		var/datum/sprite_accessory/taur/required_taur = required_taur_type
-		result += list(list("text" = "Тип тела: [initial(required_taur.name)] (включая варианты)", "met" = istype(taur, required_taur_type) && !!prefs.pref_species.mutant_bodyparts["taur"]))
+		result += list(list("text" = "Тип тела: [required_taur_display_name || initial(required_taur.name)] (включая варианты)", "met" = istype(taur, required_taur_type) && !!prefs.pref_species.mutant_bodyparts["taur"]))
 		result += list(list("text" = "Случайная внешность при входе отключена", "met" = !prefs.be_random_body))
 	for(var/zone in required_bodyparts)
 		var/list/modification = prefs.modified_limbs[zone]
@@ -65,14 +66,15 @@ GLOBAL_LIST_INIT(innate_features, init_innate_features())
 	return
 
 /datum/innate_feature/naga_tail
-	name = "Naga tail"
+	name = "Supporting tail"
 	desc = "Заменяет обе ноги одним повреждаемым хвостом. Обувной слот недоступен; хвост защищён от стекла и мусора, как при «Твёрдых ступнях». MOD-костюм разворачивается и включается без ботинок; модули, которым необходимы ботинки, недоступны. Критический перелом замедляет движение, но не лишает хвост опорной функции. Хвост можно удалить и пришить обратно операцией в области паха."
 	id = INNATE_NAGA_TAIL
-	display_name = "Опорный хвост Naga"
+	display_name = "Опорный хвост"
 	required_taur_type = /datum/sprite_accessory/taur/naga
 	required_bodyparts = list(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 	incompatible_quirks = list(/datum/quirk/hard_soles::name)
 	medical_tooltip = "У пациента отсутствуют ноги. Хирургические операции на опорном хвосте необходимо начинать в области паха."
+	required_taur_display_name = "Змеиный хвост-туловище"
 
 /datum/innate_feature/naga_tail/apply_to_human(mob/living/carbon/human/character)
 	character.sync_naga_anatomy()

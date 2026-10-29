@@ -1,7 +1,7 @@
 // Хвост занимает одну запись bodyparts; обе зоны ног ссылаются на неё через get_bodypart().
 /obj/item/bodypart/l_leg/naga_tail
-	name = "naga tail"
-	desc = "Отделённый опорный хвост наги. Его можно пришить обратно хирургическим путём."
+	name = "supporting tail"
+	desc = "Отделённый опорный хвост. Его можно пришить обратно хирургическим путём."
 	icon = 'icons/obj/naga_tail_item.dmi'
 	icon_state = "naga_tail"
 	ru_name = "хвост"

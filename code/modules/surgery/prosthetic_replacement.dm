@@ -95,8 +95,8 @@
 
 // В паху сохраняется туловище, поэтому наличие хвоста проверяется отдельно от доступа.
 /datum/surgery/naga_tail_replacement
-	name = "Naga tail transplantation"
-	desc = "Пересадка опорного хвоста наги через доступ в области паха."
+	name = "Supporting tail transplantation"
+	desc = "Пересадка опорного хвоста через доступ в области паха."
 	icon_state = "surgery_any"
 	steps = list(/datum/surgery_step/incise, /datum/surgery_step/clamp_bleeders, /datum/surgery_step/retract_skin, /datum/surgery_step/attach_naga_tail)
 	possible_locs = list(BODY_ZONE_PRECISE_GROIN)
@@ -129,5 +129,5 @@
 	display_results(user, target, span_notice("Вы пришили опорный хвост [target]."),
 		"[user] пришивает опорный хвост [target]!",
 		"[user] пришивает опорный хвост [target]!")
-	log_combat(user, target, "surgically attached naga tail")
+	log_combat(user, target, "surgically attached supporting tail")
 	return TRUE
