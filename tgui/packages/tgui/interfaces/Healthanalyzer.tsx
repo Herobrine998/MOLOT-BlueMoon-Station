@@ -15,6 +15,7 @@ type Limb = { name: string; missing: BooleanLike; missingIcon?: string; missingT
 type Organ = { name: string; icon: string; damage: number | null; status: string; warning: BooleanLike; critical: BooleanLike };
 type Reagent = { name: string; volume: number; overdosed: BooleanLike; inactive: BooleanLike };
 type Quirk = { name: string; value: number };
+type InnateFeature = { id: string; name: string; tooltip?: string | null };
 type Scan = {
   scanTime: string;
   woundOnly?: BooleanLike;
@@ -31,6 +32,7 @@ type Scan = {
   diagnosis?: ScanLine[];
   deathNotice?: ScanLine[];
   quirks?: Quirk[];
+  innateFeatures?: InnateFeature[];
   implants?: string[];
   damageLevels?: Record<string, number>;
   damageLocalization?: Limb[];
@@ -88,6 +90,16 @@ export const Healthanalyzer = () => {
               )}
               {!!scan.deathNotice?.length && <Box mb={0.5}><ScanLines lines={scan.deathNotice} compact /></Box>}
               {!!scan.damageLevels && <VitalSigns scan={scan} />}
+              {scan.innateFeatures !== undefined && (
+                <Box mt={0.5}>
+                  Врожденные особенности: {scan.innateFeatures.length > 0 ? scan.innateFeatures.map((feature, index) => (
+                    <Fragment key={feature.id}>
+                      {index > 0 && ', '}
+                      <InnateFeatureLabel feature={feature} />
+                    </Fragment>
+                  )) : 'Нет'}
+                </Box>
+              )}
             </>
           ) : <NoticeBox>В памяти нет результатов обследования. Просканируйте пациента.</NoticeBox>}
         </Section>
@@ -171,6 +183,23 @@ const SpeciesBadge = ({ name, similarName, robotic, color }: { name: string; sim
       {visible && (
         <div ref={tooltip} className="Tooltip Healthanalyzer__speciesTooltip" role="tooltip">
           <Box>Схожая раса: {similarName}</Box>
+        </div>
+      )}
+    </span>
+  );
+};
+
+const InnateFeatureLabel = ({ feature }: { feature: InnateFeature }) => {
+  const [hovered, setHovered] = useState(false);
+  const visible = hovered && !!feature.tooltip;
+  const { anchor, tooltip } = useMedicalTooltipPosition(visible, `${feature.id}:${feature.tooltip}`);
+  useMedicalTooltipEscape(visible, () => setHovered(false));
+  return (
+    <span ref={anchor} className="Healthanalyzer__innateFeature" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onFocus={() => setHovered(true)} onBlur={() => setHovered(false)} tabIndex={feature.tooltip ? 0 : undefined}>
+      <span className={feature.tooltip ? 'Healthanalyzer__innateFeatureLabel' : undefined}>{feature.name}</span>
+      {visible && (
+        <div ref={tooltip} className="Tooltip Healthanalyzer__innateTooltip" role="tooltip">
+          {feature.tooltip}
         </div>
       )}
     </span>

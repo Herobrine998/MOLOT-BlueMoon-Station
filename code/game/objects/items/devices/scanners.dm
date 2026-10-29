@@ -439,6 +439,19 @@ GENETICS SCANNER
 	)
 	var/msg = ""
 
+	var/list/innate_features = list()
+	var/list/innate_feature_names = list()
+	data["innateFeatures"] = innate_features
+	if(ishuman(M))
+		var/mob/living/carbon/human/patient = M
+		for(var/feature_id in patient.applied_innate_features)
+			var/datum/innate_feature/feature = GLOB.innate_features[feature_id]
+			if(!feature)
+				continue
+			var/feature_name = feature.display_name || feature.name
+			innate_features += list(list("id" = feature.id, "name" = feature_name, "tooltip" = feature.medical_tooltip))
+			innate_feature_names += html_encode(feature_name)
+
 	if(brute_loss > 10)
 		msg += "\n" + span_alert("Травмы: [brute_loss > 50 ? "серьёзные" : "незначительные"]")
 	if(fire_loss > 10)
@@ -896,6 +909,7 @@ GENETICS SCANNER
 		header += "[span_info("Импланты:")] [html_encode(jointext(implants, ", "))]<br>"
 	if(length(quirk_report))
 		header += "[span_info("Особенности:")] [jointext(quirk_report, ", ")]<br>"
+	header += "[span_info("Врожденные особенности:")] [length(innate_feature_names) ? jointext(innate_feature_names, ", ") : "Нет"]<br>"
 	var/report = "[header][data["report"]]<hr>[span_info("Снимок от [scan_time]")]"
 	data["report"] = report
 	return data

@@ -22,6 +22,7 @@ GLOBAL_LIST_INIT(innate_features, init_innate_features())
 	var/list/required_quirks
 	var/list/incompatible_quirks
 	var/list/incompatible_features
+	var/medical_tooltip
 
 /datum/innate_feature/proc/requirements(datum/preferences/prefs)
 	var/list/result = list()
@@ -71,6 +72,7 @@ GLOBAL_LIST_INIT(innate_features, init_innate_features())
 	required_taur_type = /datum/sprite_accessory/taur/naga
 	required_bodyparts = list(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 	incompatible_quirks = list(/datum/quirk/hard_soles::name)
+	medical_tooltip = "У пациента отсутствуют ноги. Хирургические операции на опорном хвосте необходимо начинать в области паха."
 
 /datum/innate_feature/naga_tail/apply_to_human(mob/living/carbon/human/character)
 	character.sync_naga_anatomy()
