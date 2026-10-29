@@ -2,8 +2,8 @@
 /obj/item/bodypart/l_leg/naga_tail
 	name = "naga tail"
 	desc = "Отделённый опорный хвост наги. Его можно пришить обратно хирургическим путём."
-	icon = 'icons/obj/surgery.dmi'
-	icon_state = "severedtail"
+	icon = 'icons/obj/naga_tail_item.dmi'
+	icon_state = "naga_tail"
 	ru_name = "хвост"
 	ru_name_v = "хвосте"
 	ru_name_y = "хвост"
@@ -17,12 +17,12 @@
 	px_y = 0
 	dmg_overlay_type = ""
 	var/taur_style = "Naga"
-	var/tail_item_icon = 'icons/obj/surgery.dmi'
-	var/tail_item_state = "severedtail"
+	var/tail_item_icon = 'icons/obj/naga_tail_item.dmi'
+	var/tail_item_state = "naga_tail"
 	var/tail_item_color
-	var/tail_item_extra_state
+	var/tail_item_extra_state = "naga_tail_cut"
 	var/tail_item_extra2_state
-	var/tail_item_extra_color
+	var/tail_item_extra_color = NONE
 	var/tail_item_extra2_color
 
 /obj/item/bodypart/l_leg/naga_tail/update_limb(dropping_limb, mob/living/carbon/source)

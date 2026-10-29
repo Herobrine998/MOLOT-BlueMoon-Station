@@ -141,6 +141,10 @@
 	severed_body_state = "naga-severed"
 	severed_body_extra_state = "naga-severed"
 	severed_body_extra_color_src = NONE
+	severed_item_icon = 'icons/obj/naga_tail_item.dmi'
+	severed_item_state = "naga_tail"
+	severed_item_extra_state = "naga_tail_cut"
+	severed_item_extra_color_src = NONE
 
 /datum/sprite_accessory/taur/naga/coiled
 	name = "Naga (coiled)"

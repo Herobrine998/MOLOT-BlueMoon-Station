@@ -145,10 +145,10 @@
 	severed_body_state = "naga_severed"
 	severed_body_extra_state = "naga_severed"
 	severed_body_extra_color_src = NONE
-	severed_item_icon = 'icons/obj/naga_tails.dmi'
-	severed_item_state = "naga_severed"
-	severed_item_extra_state = "naga_severed_extra"
-	severed_item_extra_color_src = MUTCOLORS3
+	severed_item_icon = 'icons/obj/naga_tail_item.dmi'
+	severed_item_state = "naga_tail"
+	severed_item_extra_state = "naga_tail_cut"
+	severed_item_extra_color_src = NONE
 ```
 
 Новые состояния культи добавляются в существующий `icon` соответствующего тавра.
@@ -163,9 +163,11 @@
 только явно настроенные дополнительные слои отсечённой версии, чтобы не
 дорисовывать целый хвост поверх культи.
 
-Файл предмета в примере пока не добавлен. До подключения рисунков предмет
-использует стандартный `severedtail` с основным цветом донора. Собственные
-рисунки поддерживают матричную окраску и отдельные extra/extra2; цвета сохраняются
+Для предмета подключён core-файл `icons/obj/naga_tail_item.dmi`: `naga_tail`
+содержит матричную основу, `naga_tail_cut` — срез с постоянными цветами (`NONE`).
+Оба состояния имеют размер 32×32, одно направление и один кадр. Настройки
+наследуют варианты Naga, включая Coiled, Fat и Hyper. Рисунки поддерживают
+матричную окраску и отдельные extra/extra2; цвета сохраняются
 на предмете при отсечении, включая расширенную палитру тавра, и не требуют
 удерживать ссылку на донора.
 
