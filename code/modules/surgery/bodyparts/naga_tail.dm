@@ -1,3 +1,5 @@
+#define NAGA_TAIL_BUFF_MULT 1.2
+
 // Хвост занимает одну запись bodyparts; обе зоны ног ссылаются на неё через get_bodypart().
 /obj/item/bodypart/l_leg/naga_tail
 	name = "supporting tail"
@@ -9,9 +11,11 @@
 	ru_name_y = "хвост"
 	ru_name_capital = "Хвост"
 	body_part = LEGS
-	max_damage = 100
-	max_stamina_damage = 100
-	disable_threshold = 100
+	// Запасы и восстановление равны двум обычным ногам с усилением
+	max_damage = /obj/item/bodypart/l_leg::max_damage * 2 * NAGA_TAIL_BUFF_MULT
+	max_stamina_damage = /obj/item/bodypart/l_leg::max_stamina_damage * 2 * NAGA_TAIL_BUFF_MULT
+	disable_threshold = /obj/item/bodypart/l_leg::disable_threshold * 2 * NAGA_TAIL_BUFF_MULT
+	stam_heal_tick = STAM_RECOVERY_LIMB * 2 * NAGA_TAIL_BUFF_MULT
 	use_digitigrade = NOT_DIGITIGRADE
 	px_x = 0
 	px_y = 0
@@ -234,3 +238,5 @@ GLOBAL_VAR_INIT(naga_doll_icon, 'icons/mob/naga_healthdoll.dmi')
 			tail.change_bodypart_status(BODYPART_ROBOTIC)
 		return tail
 	return ..()
+
+#undef NAGA_TAIL_BUFF_MULT
