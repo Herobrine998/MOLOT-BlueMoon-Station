@@ -34,3 +34,38 @@
 		var/obj/item/bodypart/target_limb = surgery.operated_bodypart
 		target_limb.drop_limb()
 	return TRUE
+
+// Доступ к хвосту находится в паху, а этапы совпадают с ампутацией конечности.
+/datum/surgery/naga_tail_removal
+	name = "Naga tail removal"
+	desc = "Отделение опорного хвоста наги через доступ в области паха. После удаления пациент не сможет ходить."
+	icon_state = "saw"
+	steps = list(/datum/surgery_step/incise, /datum/surgery_step/clamp_bleeders, /datum/surgery_step/retract_skin, /datum/surgery_step/saw, /datum/surgery_step/clamp_bleeders, /datum/surgery_step/sever_naga_tail)
+	possible_locs = list(BODY_ZONE_PRECISE_GROIN)
+	requires_bodypart_type = 0
+	radial_priority = SURGERY_RADIAL_PRIORITY_HEAL_ADDITIONAL
+	special_surgery_traits = list(OPERATION_NEED_FULL_ANESTHETIC)
+
+/datum/surgery/naga_tail_removal/can_start(mob/user, mob/living/carbon/target, obj/item/tool)
+	return HAS_TRAIT(target, TRAIT_NAGA_ANATOMY) && istype(target.get_bodypart(BODY_ZONE_L_LEG), /obj/item/bodypart/l_leg/naga_tail) && ..()
+
+/datum/surgery_step/sever_naga_tail
+	name = "Отделить опорный хвост"
+	parent_type = /datum/surgery_step/sever_limb
+
+/datum/surgery_step/sever_naga_tail/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	display_results(user, target, span_notice("Вы начинаете отделять опорный хвост [target]..."),
+		"[user] начинает отделять опорный хвост [target].",
+		"[user] начинает отделять опорный хвост [target].")
+
+/datum/surgery_step/sever_naga_tail/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	var/obj/item/bodypart/l_leg/naga_tail/tail = target.get_bodypart(BODY_ZONE_L_LEG)
+	if(!istype(tail))
+		return FALSE
+	tail.drop_limb()
+	target.updatehealth()
+	display_results(user, target, span_notice("Вы отделили опорный хвост [target]."),
+		"[user] отделяет опорный хвост [target]!",
+		"[user] отделяет опорный хвост [target]!")
+	log_combat(user, target, "surgically removed naga tail")
+	return TRUE

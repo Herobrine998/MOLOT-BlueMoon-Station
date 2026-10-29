@@ -92,3 +92,42 @@
 			var/obj/item/melee/arm_blade/new_arm = new(target,TRUE,TRUE)
 			target_zone == BODY_ZONE_R_ARM ? target.put_in_r_hand(new_arm) : target.put_in_l_hand(new_arm)
 			return TRUE
+
+// В паху сохраняется туловище, поэтому наличие хвоста проверяется отдельно от доступа.
+/datum/surgery/naga_tail_replacement
+	name = "Naga tail transplantation"
+	desc = "Пересадка опорного хвоста наги через доступ в области паха."
+	icon_state = "surgery_any"
+	steps = list(/datum/surgery_step/incise, /datum/surgery_step/clamp_bleeders, /datum/surgery_step/retract_skin, /datum/surgery_step/attach_naga_tail)
+	possible_locs = list(BODY_ZONE_PRECISE_GROIN)
+	requires_bodypart_type = 0
+	radial_priority = SURGERY_RADIAL_PRIORITY_HEAL_EMERGENCY
+	special_surgery_traits = list(OPERATION_NEED_FULL_ANESTHETIC)
+
+/datum/surgery/naga_tail_replacement/can_start(mob/user, mob/living/carbon/target, obj/item/tool)
+	return HAS_TRAIT(target, TRAIT_NAGA_ANATOMY) && !target.get_bodypart(BODY_ZONE_L_LEG) && ..()
+
+/datum/surgery_step/attach_naga_tail
+	name = "Пришить опорный хвост"
+	parent_type = /datum/surgery_step/add_prosthetic
+	implements = list(/obj/item/bodypart/l_leg/naga_tail = 100)
+
+/datum/surgery_step/attach_naga_tail/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	if(!HAS_TRAIT(target, TRAIT_NAGA_ANATOMY) || target.get_bodypart(BODY_ZONE_L_LEG))
+		return -1
+	display_results(user, target, span_notice("Вы начинаете пришивать опорный хвост [target]..."),
+		"[user] начинает пришивать опорный хвост [target].",
+		"[user] начинает пришивать опорный хвост [target].")
+
+/datum/surgery_step/attach_naga_tail/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	if(!HAS_TRAIT(target, TRAIT_NAGA_ANATOMY) || target.get_bodypart(BODY_ZONE_L_LEG))
+		return FALSE
+	var/obj/item/bodypart/l_leg/naga_tail/tail = tool
+	if(!istype(tail) || !user.temporarilyRemoveItemFromInventory(tail))
+		return FALSE
+	tail.attach_limb(target)
+	display_results(user, target, span_notice("Вы пришили опорный хвост [target]."),
+		"[user] пришивает опорный хвост [target]!",
+		"[user] пришивает опорный хвост [target]!")
+	log_combat(user, target, "surgically attached naga tail")
+	return TRUE
