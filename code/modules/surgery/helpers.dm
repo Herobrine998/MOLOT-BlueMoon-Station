@@ -65,7 +65,7 @@
 
 	if(!current_surgery)
 		if(HAS_TRAIT(M, TRAIT_NAGA_ANATOMY) && (user.zone_selected == BODY_ZONE_L_LEG || user.zone_selected == BODY_ZONE_R_LEG))
-			to_chat(user, span_notice("У [M] нет ног: вместо них опорный хвост. Его основание находится в области паха. Для удаления или пришивания хвоста выберите пах на кукле прицеливания."))
+			to_chat(user, span_warning("У [M] нет ног: вместо них опорный хвост. Его основание находится в области паха. Для удаления или пришивания хвоста выберите пах на кукле прицеливания."))
 			. = TRUE
 		var/list/available_surgeries = get_available_surgeries(I, M, user, selected_zone)
 		if(!available_surgeries.len)

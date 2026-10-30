@@ -35,12 +35,12 @@
 		target_limb.drop_limb()
 	return TRUE
 
-// Доступ к хвосту находится в паху, а этапы совпадают с ампутацией конечности.
+// После отсечения хвоста разрез на оставшемся туловище необходимо закрыть.
 /datum/surgery/naga_tail_removal
 	name = "Supporting tail removal"
 	desc = "Отделение опорного хвоста через доступ в области паха. После удаления пациент не сможет ходить."
 	icon_state = "saw"
-	steps = list(/datum/surgery_step/incise, /datum/surgery_step/clamp_bleeders, /datum/surgery_step/retract_skin, /datum/surgery_step/saw, /datum/surgery_step/clamp_bleeders, /datum/surgery_step/sever_naga_tail)
+	steps = list(/datum/surgery_step/incise, /datum/surgery_step/clamp_bleeders, /datum/surgery_step/retract_skin, /datum/surgery_step/saw, /datum/surgery_step/clamp_bleeders, /datum/surgery_step/sever_naga_tail, /datum/surgery_step/close/naga_tail_removal)
 	possible_locs = list(BODY_ZONE_PRECISE_GROIN)
 	requires_bodypart_type = 0
 	radial_priority = SURGERY_RADIAL_PRIORITY_HEAL_ADDITIONAL
@@ -69,3 +69,11 @@
 		"[user] отделяет опорный хвост [target]!")
 	log_combat(user, target, "surgically removed supporting tail")
 	return TRUE
+
+/datum/surgery_step/close/naga_tail_removal/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	. = ..()
+	var/obj/item/bodypart/bodypart = target.get_bodypart(target_zone)
+	if(bodypart)
+		// Разрез даёт 10 единиц кровотечения, а два зажима и обычное прижигание снимают только 9.
+		bodypart.generic_bleedstacks = max(0, bodypart.generic_bleedstacks - 1)
+		bodypart.update_part_wound_overlay()
