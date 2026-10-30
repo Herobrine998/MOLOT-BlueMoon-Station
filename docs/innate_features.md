@@ -31,8 +31,7 @@
 
 | Поля | Назначение |
 | --- | --- |
-| `severed_body_state` | Основа состояния культи в DMI тавра. Без неё исходные слои и одежда сохраняются. |
-| `severed_body_icon` | Отдельный атлас культи; без него используется DMI тавра. Варианты наги используют общий core-атлас. |
+| `severed_body_state` | Основа состояния культи в основном `icon` соответствующего тавра. Без неё исходные слои и одежда сохраняются. |
 | `severed_body_extra_state`, `severed_body_extra2_state` | Дополнительные слои культи. |
 | `severed_item_icon`, `severed_item_state` | DMI и полное имя состояния хвоста-предмета. |
 | `severed_item_extra_state`, `severed_item_extra2_state` | Дополнительные слои предмета. |
@@ -40,7 +39,7 @@
 | `severed_item_extra_color_src`, `severed_item_extra2_color_src` | Независимые источники цвета слоёв предмета. |
 
 Источники цвета: `null` — прежняя окраска extra/extra2; `NONE` — исходные цвета DMI; `MUTCOLORS`, `MUTCOLORS2`, `MUTCOLORS3` — соответствующий цвет палитры тавра. Поддерживаются и остальные штатные источники.
-Состояния культи: `m_taur_<state>_<слой>`, дополнительные — `m_taur_extra_<state>_<слой>` и `m_taur_extra2_<state>_<слой>`; для Naga слои `ADJUP` и `FRONT`.
+Состояния культи лежат в основном `icon` каждого хвоста: `m_taur_<state>_<слой>`, дополнительные — `m_taur_extra_<state>_<слой>` и `m_taur_extra2_<state>_<слой>`; для Naga слои `ADJUP` и `FRONT`. Основа имени состояния — `naga-severed` для Naga, `nagafat-severed` для Naga, Fat и `chemnaga-severed` для RadDog Naga (Hyper).
 
 В самом хвосте `taur_style` и поля `tail_item_*` хранят форму, ресурсы и снимок цветов донора для отображения отделённого предмета.
 

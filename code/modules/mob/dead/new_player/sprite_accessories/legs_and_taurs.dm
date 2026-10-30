@@ -30,7 +30,7 @@
 	var/alt_taur_mode = NONE //Same as above.
 	var/hide_legs = USE_QUADRUPED_CLIP_MASK
 	mutant_part_string = "taur"
-	// Отдельные ресурсы для культи на персонаже и отсечённого хвоста на полу.
+	// Состояния культи хранятся в основном icon; предмет отсечённого хвоста имеет отдельные ресурсы.
 	var/severed_body_state
 	var/severed_item_icon = 'icons/obj/surgery.dmi'
 	var/severed_item_state = "severedtail"
@@ -43,7 +43,6 @@
 	var/severed_body_extra2_color_src
 	var/severed_item_extra_color_src
 	var/severed_item_extra2_color_src
-	var/severed_body_icon
 
 /datum/sprite_accessory/taur/is_not_visible(var/mob/living/carbon/human/H, var/tauric)
 	return (!tauric || (H.wear_suit && (H.wear_suit.flags_inv & HIDETAUR)))
@@ -146,7 +145,6 @@
 	severed_item_state = "naga_tail"
 	severed_item_extra_state = "naga_tail_cut"
 	severed_item_extra_color_src = NONE
-	severed_body_icon = 'modular_citadel/icons/mob/mam_taur.dmi'
 
 /datum/sprite_accessory/taur/naga/coiled
 	name = "Naga (coiled)"

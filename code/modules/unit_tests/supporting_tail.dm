@@ -632,10 +632,10 @@
 /datum/unit_test/supporting_tail/asset_states/Run()
 	for(var/style in list("Naga", "Naga (coiled)", "Naga, Fat", "RadDog Naga (Hyper)"))
 		var/datum/sprite_accessory/taur/variant = GLOB.taur_list[style]
-		var/list/body_states = icon_states(variant.severed_body_icon || variant.icon)
-		TEST_ASSERT("m_taur_[variant.severed_body_state]_ADJUP" in body_states, "Атлас культи содержит верхний слой для [style].")
-		TEST_ASSERT("m_taur_[variant.severed_body_state]_FRONT" in body_states, "Атлас культи содержит передний слой для [style].")
-		TEST_ASSERT("m_taur_extra_[variant.severed_body_extra_state]_FRONT" in body_states, "Атлас культи содержит срез для [style].")
+		var/list/body_states = icon_states(variant.icon)
+		TEST_ASSERT("m_taur_[variant.severed_body_state]_ADJUP" in body_states, "Основной атлас хвоста содержит верхний слой культи для [style].")
+		TEST_ASSERT("m_taur_[variant.severed_body_state]_FRONT" in body_states, "Основной атлас хвоста содержит передний слой культи для [style].")
+		TEST_ASSERT("m_taur_extra_[variant.severed_body_extra_state]_FRONT" in body_states, "Основной атлас хвоста содержит срез для [style].")
 	var/datum/sprite_accessory/taur/taur = GLOB.taur_list["Naga"]
 	var/list/item_states = icon_states(taur.severed_item_icon)
 	TEST_ASSERT(taur.severed_item_state in item_states, "В DMI существует подключённая основа предмета.")
