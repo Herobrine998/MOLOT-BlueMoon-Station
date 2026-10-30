@@ -67,13 +67,13 @@ GLOBAL_LIST_INIT(innate_features, init_innate_features())
 
 /datum/innate_feature/naga_tail
 	name = "Supporting tail"
-	desc = "Заменяет обе ноги одним повреждаемым хвостом. Обувной слот недоступен; хвост защищён от стекла и мусора, как при «Твёрдых ступнях». MOD-костюм разворачивается и включается без ботинок; модули, которым необходимы ботинки, недоступны. Критический перелом замедляет движение, но не лишает хвост опорной функции. Хвост можно удалить и пришить обратно операцией в области паха."
+	desc = "Заменяет обе ноги одним повреждаемым хвостом. Персонаж умеет передвигаться только хвостом: после переноса разума в тело с ногами сможет лишь ползать. Медик может ампутировать обе ноги нового тела и пересадить опорный хвост через пах. Обувной слот недоступен; хвост защищён от стекла и мусора, как при «Твёрдых ступнях». MOD-костюм разворачивается и включается без ботинок; модули, которым необходимы ботинки, недоступны. Критический перелом замедляет движение, но не лишает хвост опорной функции."
 	id = INNATE_NAGA_TAIL
 	display_name = "Опорный хвост"
 	required_taur_type = /datum/sprite_accessory/taur/naga
 	required_bodyparts = list(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 	incompatible_quirks = list(/datum/quirk/hard_soles::name)
-	medical_tooltip = "У пациента отсутствуют ноги. Хирургические операции на опорном хвосте необходимо начинать в области паха."
+	medical_tooltip = "У пациента отсутствуют ноги. Хирургические операции на опорном хвосте необходимо начинать в области паха. Пересадка хвоста в тело с ногами возможна после ампутации обеих ног."
 	required_taur_display_name = "Змеиный хвост-туловище"
 
 /datum/innate_feature/naga_tail/apply_to_human(mob/living/carbon/human/character)
@@ -81,6 +81,16 @@ GLOBAL_LIST_INIT(innate_features, init_innate_features())
 
 /datum/innate_feature/naga_tail/remove_from_human(mob/living/carbon/human/character)
 	character.sync_naga_anatomy()
+
+// Навык принадлежит личности; изменение анатомии тела само по себе его не переписывает.
+/datum/mind/proc/set_naga_locomotion(enabled)
+	var/previous = HAS_TRAIT(src, TRAIT_NAGA_LOCOMOTION)
+	if(enabled)
+		ADD_TRAIT(src, TRAIT_NAGA_LOCOMOTION, INNATE_NAGA_TAIL)
+	else
+		REMOVE_TRAIT(src, TRAIT_NAGA_LOCOMOTION, INNATE_NAGA_TAIL)
+	if(previous != HAS_TRAIT(src, TRAIT_NAGA_LOCOMOTION))
+		current?.update_mobility()
 
 /mob/living/carbon/human
 	var/list/applied_innate_features
@@ -139,6 +149,7 @@ GLOBAL_LIST_INIT(innate_features, init_innate_features())
 /datum/preferences/proc/apply_innate_features(mob/living/carbon/human/character)
 	character.dna.features["innate_features"] = valid_innate_features()
 	character.sync_innate_features()
+	character.mind?.set_naga_locomotion(INNATE_NAGA_TAIL in character.dna.features["innate_features"])
 
 /datum/character_setup/proc/build_innate_data()
 	var/list/items = list()

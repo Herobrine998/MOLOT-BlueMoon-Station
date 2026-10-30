@@ -451,6 +451,9 @@ GENETICS SCANNER
 			var/feature_name = feature.display_name || feature.name
 			innate_features += list(list("id" = feature.id, "name" = feature_name, "tooltip" = feature.medical_tooltip))
 			innate_feature_names += html_encode(feature_name)
+		if(HAS_MIND_TRAIT(patient, TRAIT_NAGA_LOCOMOTION) && !HAS_TRAIT(patient, TRAIT_NAGA_ANATOMY))
+			innate_features += list(list("id" = TRAIT_NAGA_LOCOMOTION, "name" = "Хвостовая моторика", "tooltip" = "Пациент умеет передвигаться только опорным хвостом. Ноги этого тела не дают ему возможности ходить. Для восстановления ходьбы ампутируйте обе ноги, затем пересадите опорный хвост через доступ в паху."))
+			innate_feature_names += "Хвостовая моторика"
 
 	if(brute_loss > 10)
 		msg += "\n" + span_alert("Травмы: [brute_loss > 50 ? "серьёзные" : "незначительные"]")

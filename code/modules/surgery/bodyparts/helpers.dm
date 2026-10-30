@@ -140,6 +140,8 @@
 	if(HAS_TRAIT(src, TRAIT_NAGA_ANATOMY))
 		var/obj/item/bodypart/tail = get_bodypart(BODY_ZONE_L_LEG)
 		return (tail && (!check_disabled || !tail.disabled)) ? 2 : 0
+	if(check_disabled && HAS_MIND_TRAIT(src, TRAIT_NAGA_LOCOMOTION))
+		return 0
 	return ..()
 
 //sometimes we want to ignore that we don't have the required amount of legs.

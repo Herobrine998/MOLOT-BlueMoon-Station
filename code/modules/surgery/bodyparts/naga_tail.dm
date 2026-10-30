@@ -135,19 +135,42 @@
 			return BODYPART_DISABLED_WOUND
 	return BODYPART_NOT_DISABLED
 
+/mob/living/carbon/human/proc/can_receive_naga_tail()
+	return (HAS_TRAIT(src, TRAIT_NAGA_ANATOMY) || !!dna?.species?.mutant_bodyparts["taur"]) && !get_bodypart(BODY_ZONE_L_LEG) && !get_bodypart(BODY_ZONE_R_LEG)
+
 /obj/item/bodypart/l_leg/naga_tail/attach_limb(mob/living/carbon/C, special)
-	if(!HAS_TRAIT(C, TRAIT_NAGA_ANATOMY) || C.get_bodypart(BODY_ZONE_L_LEG))
+	if(!ishuman(C))
 		return FALSE
+	var/mob/living/carbon/human/human = C
+	if(!human.can_receive_naga_tail())
+		return FALSE
+	var/converting_anatomy = !HAS_TRAIT(C, TRAIT_NAGA_ANATOMY)
+	if(converting_anatomy)
+		var/list/selected = C.dna.features["innate_features"]
+		if(!islist(selected))
+			selected = list()
+		selected |= INNATE_NAGA_TAIL
+		C.dna.features["innate_features"] = selected
+		ADD_TRAIT(C, TRAIT_NAGA_ANATOMY, INNATE_NAGA_TAIL)
 	C.dna.features["taur"] = taur_style
 	. = ..()
 	ADD_TRAIT(C, TRAIT_HARD_SOLES, INNATE_NAGA_TAIL)
 	for(var/datum/wound/blunt/fracture as anything in wounds)
 		fracture.update_inefficiencies()
-	if(ishuman(C))
-		var/mob/living/carbon/human/human = C
-		human.update_inv_wear_suit()
-		human.update_inv_belt()
-		human.invalidate_naga_hud()
+	if(converting_anatomy)
+		// Пришивается принесённая конечность; синхронизация не должна создавать новый хвост.
+		human.sync_innate_features()
+		human.remove_status_effect(/datum/status_effect/bola_snared)
+		if(human.shoes)
+			human.dropItemToGround(human.shoes, TRUE)
+		if(human.w_socks)
+			human.dropItemToGround(human.w_socks, TRUE)
+		if(human.legcuffed)
+			human.dropItemToGround(human.legcuffed, TRUE)
+		human.hud_used?.update_locked_slots()
+	human.update_inv_wear_suit()
+	human.update_inv_belt()
+	human.invalidate_naga_hud()
 	return TRUE
 
 /obj/item/bodypart/l_leg/naga_tail/drop_limb(special, dismembered)
