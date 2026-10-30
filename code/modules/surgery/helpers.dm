@@ -244,6 +244,12 @@
 	var/eyesmouth_covered = 0	//based on flags_cover
 	if(iscarbon(M))
 		var/mob/living/carbon/C = M
+		if(location == BODY_ZONE_PRECISE_GROIN && HAS_TRAIT(C, TRAIT_NAGA_ANATOMY))
+			location = BODY_ZONE_CHEST
+		if(location == BODY_ZONE_L_LEG || location == BODY_ZONE_R_LEG)
+			var/obj/item/bodypart/limb = C.get_bodypart(location)
+			if(limb)
+				location = limb.get_clothing_zone()
 		for(var/obj/item/clothing/I in list(C.back, C.wear_mask, C.head))
 			covered_locations |= I.body_parts_covered
 			face_covered |= I.flags_inv

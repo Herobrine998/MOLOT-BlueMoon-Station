@@ -412,7 +412,7 @@
 		remove_wound()
 
 /datum/wound/blunt/moderate/try_handling(mob/living/carbon/human/user)
-	if(user.pulling != victim || user.zone_selected != limb.body_zone || user.a_intent == INTENT_GRAB)
+	if(user.pulling != victim || victim.get_bodypart(user.zone_selected) != limb || user.a_intent == INTENT_GRAB)
 		return FALSE
 
 	if(user.grab_state == GRAB_PASSIVE)

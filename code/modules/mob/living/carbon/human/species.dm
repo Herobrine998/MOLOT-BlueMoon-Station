@@ -1053,6 +1053,7 @@ GLOBAL_LIST_EMPTY(roundstart_race_names)
 				// Без настроенного состояния сохраняем все исходные слои тавра.
 				if(taur.severed_body_state)
 					severed_taur = taur
+					accessory_overlay.icon = taur.severed_body_icon || S.icon
 					accessory_overlay.icon_state = "[S.gender_specific ? g : "m"]_taur_[taur.severed_body_state]_[layertext]"
 			if(S.center)
 				accessory_overlay = center_image(accessory_overlay, S.dimension_x, S.dimension_y)
@@ -1156,7 +1157,7 @@ GLOBAL_LIST_EMPTY(roundstart_race_names)
 
 			var/extra_state = severed_taur ? severed_taur.severed_body_extra_state : (S.extra ? S.icon_state : null)
 			if(severed_taur ? !!extra_state : S.extra) // Для обычного тавра сохраняем исходное условие extra.
-				var/mutable_appearance/extra_accessory_overlay = mutable_appearance(S.icon, layer = part_layer)
+				var/mutable_appearance/extra_accessory_overlay = mutable_appearance(severed_taur?.severed_body_icon || S.icon, layer = part_layer)
 				extra_accessory_overlay.category = S.mutable_category
 				if(S.gender_specific)
 					extra_accessory_overlay.icon_state = "[g]_[bodypart]_extra_[extra_state]_[layertext]"
@@ -1211,7 +1212,7 @@ GLOBAL_LIST_EMPTY(roundstart_race_names)
 
 			var/extra2_state = severed_taur ? severed_taur.severed_body_extra2_state : (S.extra2 ? S.icon_state : null)
 			if(severed_taur ? !!extra2_state : S.extra2) // Для обычного тавра сохраняем исходное условие extra2.
-				var/mutable_appearance/extra2_accessory_overlay = mutable_appearance(S.icon, layer = part_layer)
+				var/mutable_appearance/extra2_accessory_overlay = mutable_appearance(severed_taur?.severed_body_icon || S.icon, layer = part_layer)
 				extra2_accessory_overlay.category = S.mutable_category
 				if(S.gender_specific)
 					extra2_accessory_overlay.icon_state = "[g]_[bodypart]_extra2_[extra2_state]_[layertext]"

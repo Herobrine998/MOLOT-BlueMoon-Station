@@ -43,6 +43,7 @@
 	var/severed_body_extra2_color_src
 	var/severed_item_extra_color_src
 	var/severed_item_extra2_color_src
+	var/severed_body_icon
 
 /datum/sprite_accessory/taur/is_not_visible(var/mob/living/carbon/human/H, var/tauric)
 	return (!tauric || (H.wear_suit && (H.wear_suit.flags_inv & HIDETAUR)))
@@ -145,6 +146,7 @@
 	severed_item_state = "naga_tail"
 	severed_item_extra_state = "naga_tail_cut"
 	severed_item_extra_color_src = NONE
+	severed_body_icon = 'modular_citadel/icons/mob/mam_taur.dmi'
 
 /datum/sprite_accessory/taur/naga/coiled
 	name = "Naga (coiled)"

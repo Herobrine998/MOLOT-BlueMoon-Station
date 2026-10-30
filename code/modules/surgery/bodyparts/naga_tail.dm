@@ -10,7 +10,7 @@
 	ru_name_v = "хвосте"
 	ru_name_y = "хвост"
 	ru_name_capital = "Хвост"
-	// Защиту хвоста определяет одежда, закрывающая пах.
+	// Анатомический флаг хвоста не меняется при выборе покрытия одежды через get_clothing_zone().
 	body_part = GROIN
 	// Запасы и восстановление равны двум обычным ногам с усилением
 	max_damage = /obj/item/bodypart/l_leg::max_damage * 2 * NAGA_TAIL_BUFF_MULT
@@ -35,6 +35,8 @@
 	// Обычный спрайт ноги и её маски не должны появляться поверх таврического тела.
 	dmg_overlay_type = ""
 	use_digitigrade = NOT_DIGITIGRADE
+	if(no_update)
+		return
 	var/mob/living/carbon/appearance_source = source || owner
 	if(appearance_source?.dna)
 		taur_style = appearance_source.dna.features["taur"]
@@ -102,6 +104,9 @@
 				blue = list(0, 0, 0)
 			return rgb_construct_color_matrix(red[1] / 255, red[2] / 255, red[3] / 255, green[1] / 255, green[2] / 255, green[3] / 255, blue[1] / 255, blue[2] / 255, blue[3] / 255, 0, 0, 0)
 	return null
+
+/obj/item/bodypart/l_leg/naga_tail/get_clothing_zone()
+	return BODY_ZONE_CHEST
 
 /obj/item/bodypart/l_leg/naga_tail/get_limb_icon(dropped)
 	if(!dropped)

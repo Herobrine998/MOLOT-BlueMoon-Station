@@ -427,6 +427,10 @@
 	return CHECK_MOBILITY(src, MOBILITY_UI)
 
 /mob/living/carbon/human/proc/is_zone_covered_by_clothing(target_zone)
+	if(target_zone == BODY_ZONE_L_LEG || target_zone == BODY_ZONE_R_LEG)
+		var/obj/item/bodypart/limb = get_bodypart(target_zone)
+		if(limb)
+			target_zone = limb.get_clothing_zone()
 	var/covered_part = zone2body_parts_covered_complicated(target_zone)
 	if(!covered_part)
 		if(above_neck(target_zone))
