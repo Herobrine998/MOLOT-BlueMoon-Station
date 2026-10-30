@@ -1,4 +1,5 @@
 #define NAGA_TAIL_BUFF_MULT 1.2
+#define NAGA_TAIL_INJURY_CHANCE 50
 
 // Хвост занимает одну запись bodyparts; обе зоны ног ссылаются на неё через get_bodypart().
 /obj/item/bodypart/l_leg/naga_tail
@@ -21,6 +22,7 @@
 	px_x = 0
 	px_y = 0
 	dmg_overlay_type = ""
+	w_class = WEIGHT_CLASS_NORMAL
 	var/taur_style = "Naga"
 	var/tail_item_icon = 'icons/obj/naga_tail_item.dmi'
 	var/tail_item_state = "naga_tail"
@@ -107,6 +109,18 @@
 
 /obj/item/bodypart/l_leg/naga_tail/get_clothing_zone()
 	return BODY_ZONE_CHEST
+
+/obj/item/bodypart/l_leg/naga_tail/try_dismember(wounding_type, wounding_dmg, wound_bonus, bare_wound_bonus)
+	// Дополнительная проверка вдвое снижает итоговый шанс, даже если обычный уже достиг 100%.
+	if(!prob(NAGA_TAIL_INJURY_CHANCE))
+		return FALSE
+	return ..()
+
+/obj/item/bodypart/l_leg/naga_tail/check_woundings_mods(wounding_type, damage, wound_bonus, bare_wound_bonus)
+	. = ..()
+	// Броня и износ одежды рассчитываются всегда; в половине случаев сама рана не возникает.
+	if(!prob(NAGA_TAIL_INJURY_CHANCE))
+		return -INFINITY
 
 /obj/item/bodypart/l_leg/naga_tail/get_limb_icon(dropped)
 	if(!dropped)
@@ -269,3 +283,4 @@ GLOBAL_VAR_INIT(naga_doll_icon, 'icons/mob/naga_healthdoll.dmi')
 	return ..()
 
 #undef NAGA_TAIL_BUFF_MULT
+#undef NAGA_TAIL_INJURY_CHANCE

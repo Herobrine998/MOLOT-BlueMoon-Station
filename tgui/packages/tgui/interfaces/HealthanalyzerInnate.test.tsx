@@ -35,7 +35,8 @@ test('врождённые особенности находятся внизу 
   const first = container.querySelector('.Section')!;
   expect(within(first as HTMLElement).getByText('Опорный хвост')).toBeTruthy();
   const content = first.querySelector('.Section__content')!;
-  expect(content.lastElementChild!.textContent).toContain('Врожденные особенности: Опорный хвост');
+  expect(content.lastElementChild!.textContent).toContain('Врожденное: Опорный хвост');
+  expect(screen.getByText('Врожденное:').classList.contains('color-label')).toBe(true);
 });
 
 test('медицинская подсказка приходит из данных особенности и находится рядом с якорем', () => {
@@ -53,13 +54,13 @@ test('медицинская подсказка приходит из данны
 
 test('пустой список явно показывает отсутствие особенностей', () => {
   setup({ ...sample, innateFeatures: [] });
-  expect(screen.getByText('Врожденные особенности: Нет')).toBeTruthy();
+  expect(screen.getByText('Врожденное:').parentElement!.textContent).toBe('Врожденное: Нет');
   expect(screen.queryByRole('tooltip')).toBeNull();
 });
 
 test('старый или химический отчёт без поля не показывает ложное отсутствие особенностей', () => {
   setup({ ...sample, chemicalOnly: 1, innateFeatures: undefined });
-  expect(screen.queryByText(/Врожденные особенности:/)).toBeNull();
+  expect(screen.queryByText(/Врожденное:/)).toBeNull();
 });
 
 test('несколько особенностей получают независимые подсказки', () => {
@@ -97,7 +98,7 @@ test('обновление скана удаляет открытую подск
   fireEvent.mouseEnter(screen.getByText(feature.name));
   update({ innateFeatures: [] });
   expect(screen.queryByRole('tooltip')).toBeNull();
-  expect(screen.getByText('Врожденные особенности: Нет')).toBeTruthy();
+  expect(screen.getByText('Врожденное:').parentElement!.textContent).toBe('Врожденное: Нет');
 });
 
 test('текст подсказки не интерпретируется как HTML', () => {

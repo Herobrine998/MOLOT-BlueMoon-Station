@@ -912,7 +912,7 @@ GENETICS SCANNER
 		header += "[span_info("Импланты:")] [html_encode(jointext(implants, ", "))]<br>"
 	if(length(quirk_report))
 		header += "[span_info("Особенности:")] [jointext(quirk_report, ", ")]<br>"
-	header += "[span_info("Врожденные особенности:")] [length(innate_feature_names) ? jointext(innate_feature_names, ", ") : "Нет"]<br>"
+	header += "[span_info("Врожденное:")] [length(innate_feature_names) ? jointext(innate_feature_names, ", ") : "Нет"]<br>"
 	var/report = "[header][data["report"]]<hr>[span_info("Снимок от [scan_time]")]"
 	data["report"] = report
 	return data
