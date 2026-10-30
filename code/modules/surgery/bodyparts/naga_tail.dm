@@ -10,7 +10,8 @@
 	ru_name_v = "хвосте"
 	ru_name_y = "хвост"
 	ru_name_capital = "Хвост"
-	body_part = LEGS
+	// Защиту хвоста определяет одежда, закрывающая пах.
+	body_part = GROIN
 	// Запасы и восстановление равны двум обычным ногам с усилением
 	max_damage = /obj/item/bodypart/l_leg::max_damage * 2 * NAGA_TAIL_BUFF_MULT
 	max_stamina_damage = /obj/item/bodypart/l_leg::max_stamina_damage * 2 * NAGA_TAIL_BUFF_MULT

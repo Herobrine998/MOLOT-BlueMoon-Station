@@ -157,13 +157,13 @@
 	var/obj/item/bodypart/tail = human.get_bodypart(BODY_ZONE_L_LEG)
 	var/obj/item/clothing/suit/armor/vest = allocate(/obj/item/clothing/suit/armor)
 	var/unprotected = human.getarmor(tail, MELEE)
-	vest.body_parts_covered = LEGS
+	vest.body_parts_covered = GROIN
 	TEST_ASSERT(human.equip_to_slot_if_possible(vest, ITEM_SLOT_OCLOTHING), "Броня надевается на носителя хвоста.")
 	var/protected = human.getarmor(human.get_bodypart(BODY_ZONE_R_LEG), MELEE)
-	TEST_ASSERT_EQUAL(protected, unprotected + vest.armor.getRating(MELEE), "Броня ног защищает единый хвост при попадании в правую зону.")
+	TEST_ASSERT_EQUAL(protected, unprotected + vest.armor.getRating(MELEE), "Броня паха защищает единый хвост при попадании в правую зону.")
 	TEST_ASSERT_EQUAL(human.getarmor(tail, MELEE), protected, "У левой и правой зон одинаковая защита.")
-	vest.body_parts_covered = ARMS
-	TEST_ASSERT_EQUAL(human.getarmor(tail, MELEE), unprotected, "Броня другой части тела не защищает хвост.")
+	vest.body_parts_covered = LEGS
+	TEST_ASSERT_EQUAL(human.getarmor(tail, MELEE), unprotected, "Броня только ног не защищает хвост.")
 
 /datum/unit_test/supporting_tail/fracture_and_paralysis/Run()
 	var/mob/living/carbon/human/human = patient()
