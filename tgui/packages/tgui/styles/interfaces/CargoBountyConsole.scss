@@ -1,0 +1,87 @@
+@use '../colors.scss';
+
+.CargoQuestConsole {
+  &__cards {
+    table-layout: fixed;
+
+    > tbody > tr > td,
+    > tr > td {
+      padding: 0.75rem;
+      vertical-align: top;
+    }
+  }
+
+  &__card {
+    position: relative;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+
+    .Section__title {
+      padding-right: 0.8rem;
+      border-bottom-width: 3px;
+    }
+
+    .Section__titleText {
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+
+    @each $name, $color in (
+      'green': colors.$green,
+      'yellow': colors.$yellow,
+      'orange': colors.$orange,
+      'purple': colors.$purple
+    ) {
+      &--#{$name} {
+        .Section__title {
+          border-bottom-color: $color;
+        }
+
+        &.CargoQuestConsole__card--active {
+          border-color: $color;
+        }
+      }
+    }
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.04);
+    }
+  }
+
+  &__content {
+    min-height: 220px;
+  }
+
+  &__image {
+    display: block;
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+    image-rendering: pixelated;
+  }
+
+  &__menu {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.88);
+    text-align: center;
+    cursor: default;
+
+    > .Box {
+      width: 100%;
+    }
+  }
+
+  &__close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+}

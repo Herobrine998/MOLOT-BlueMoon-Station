@@ -50,6 +50,7 @@
 
 // Interfaces
 @include meta.load-css('./interfaces/CharacterSetup.scss');
+@include meta.load-css('./interfaces/CargoBountyConsole.scss');
 @include meta.load-css('./interfaces/AntagInfoBloodBrother.scss');
 @include meta.load-css('./interfaces/AntagTraining.scss');
 @include meta.load-css('./interfaces/ListInput.scss');

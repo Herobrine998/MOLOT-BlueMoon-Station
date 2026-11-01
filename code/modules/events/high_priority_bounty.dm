@@ -5,18 +5,18 @@
 	weight = 50
 	earliest_start = 10
 	category = EVENT_CATEGORY_BUREAUCRATIC
-	description = "Creates bounties that are three times original worth."
+	description = "Повышает награду одного запроса на поставку втрое."
 
 /datum/round_event/high_priority_bounty/announce(fake)
-	priority_announce("Центральное командование выставило заявку с Наградой за Высокоприоритетный Груз. Подробности были отправлены на все Консоли Грантов.", "Программа Грантов Nanotrasen!")
+	priority_announce("Центральное командование утроило награду за один из запросов на поставку. Подробности доступны на консолях запросов отдела снабжения.", "Программа поставок Nanotrasen")
 
 /datum/round_event/high_priority_bounty/start()
-	var/datum/bounty/B
-	for(var/attempts = 0; attempts < 50; ++attempts)
-		B = random_bounty()
-		if(!B)
-			continue
-		B.mark_high_priority(3)
-		if(try_add_bounty(B))
-			break
+	SScargo_quests.ensure_quests()
+	var/list/available = list()
+	for(var/datum/cargo_quests_storage/quest as anything in SScargo_quests.quest_storages)
+		if(quest.priority_multiplier == 1)
+			available += quest
+	if(length(available))
+		var/datum/cargo_quests_storage/quest = pick(available)
+		quest.priority_multiplier = 3
 

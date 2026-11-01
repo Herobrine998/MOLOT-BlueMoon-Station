@@ -8,6 +8,7 @@
 	var/giftwrapped = FALSE
 	var/sort_tag = 0
 	var/obj/item/barcode/sticker
+	var/cargo_recipient
 
 /obj/structure/big_delivery/Initialize()
 	. = ..()
@@ -30,6 +31,8 @@
 
 /obj/structure/big_delivery/examine(mob/user)
 	. = ..()
+	if(cargo_recipient)
+		. += span_notice("Заказчик поставки: [cargo_recipient].")
 	if(sticker)
 		. += "There's a barcode attached to the side."
 
@@ -40,6 +43,12 @@
 /obj/structure/big_delivery/attackby(obj/item/W, mob/user, params)
 	if(istype(W, /obj/item/dest_tagger))
 		var/obj/item/dest_tagger/O = W
+		if(O.cargo_recipient)
+			cargo_recipient = O.cargo_recipient
+			to_chat(user, span_notice("Заказчик посылки: [cargo_recipient]."))
+			playsound(loc, 'sound/machines/twobeep.ogg', 50, TRUE)
+			return
+		cargo_recipient = null
 
 		if(sort_tag != O.currTag)
 			//currTag - индекс в GLOB.TAGGERLOCATIONS, у нетронутого тэггера он 0:
@@ -293,17 +302,37 @@
 
 /obj/item/dest_tagger
 	name = "destination tagger"
-	desc = "Used to set the destination of properly wrapped packages."
+	desc = "Маркировщик упакованных посылок. Alt+ЛКМ позволяет выбрать внешнего заказчика для поставок карго."
 	icon = 'icons/obj/device.dmi'
 	icon_state = "cargotagger"
-	var/currTag = 0 //Destinations are stored in code\globalvars\lists\flavor_misc.dm
-	var/locked_destination = FALSE //if true, users can't open the destination tag window to prevent changing the tagger's current destination
-	w_class = WEIGHT_CLASS_TINY
 	item_state = "electronic"
 	lefthand_file = 'icons/mob/inhands/misc/devices_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/misc/devices_righthand.dmi'
+	w_class = WEIGHT_CLASS_TINY
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BELT
+	// Индекс станционного пункта назначения в GLOB.TAGGERLOCATIONS.
+	var/currTag = 0
+	var/locked_destination = FALSE
+	var/cargo_recipient
+
+/obj/item/dest_tagger/examine(mob/user)
+	. = ..()
+	. += span_notice("Alt+ЛКМ: выбрать заказчика поставки для карго или вернуться к станционной доставке.")
+	if(cargo_recipient)
+		. += span_notice("Выбран заказчик: [cargo_recipient].")
+
+/obj/item/dest_tagger/AltClick(mob/user)
+	if(locked_destination || !user.canUseTopic(src, BE_CLOSE))
+		return
+	var/list/destinations = list("Станционная доставка")
+	for(var/customer in SScargo_quests.customers)
+		destinations += customer
+	var/selection = tgui_input_list(user, "Выберите заказчика поставки", "Маркировщик грузов", destinations, cargo_recipient || "Станционная доставка")
+	if(!selection || QDELETED(src) || locked_destination || !user.canUseTopic(src, BE_CLOSE))
+		return
+	cargo_recipient = selection == "Станционная доставка" ? null : selection
+	to_chat(user, span_notice("Режим маркировщика: [cargo_recipient || "станционная доставка"]."))
 
 /obj/item/dest_tagger/borg
 	name = "cyborg destination tagger"
@@ -350,6 +379,7 @@
 		if(n != round(n) || n < 1 || n > length(GLOB.TAGGERLOCATIONS))
 			return
 		currTag = n
+		cargo_recipient = null
 	openwindow(usr)
 
 /obj/item/sales_tagger
